@@ -1,4 +1,4 @@
-<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-index="{{ "index.json" | relURL }}" hidden>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-index="{{ with site.Home.OutputFormats.Get "json" }}{{ .RelPermalink }}{{ else }}{{ "index.json" | relURL }}{{ end }}" hidden>
   <div class="search-backdrop" id="search-backdrop"></div>
   <div class="search-box">
     <div class="search-header">
@@ -9,6 +9,7 @@
     <div class="search-body">
       <ul class="search-results" id="search-results" role="listbox"></ul>
       <div class="search-empty" id="search-empty" hidden>No results found for "<span id="search-query-text"></span>"</div>
+      <div class="search-error" id="search-error" hidden></div>
       <div class="search-initial" id="search-initial">Type to start searching...</div>
     </div>
     <div class="search-footer">

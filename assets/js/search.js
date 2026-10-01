@@ -7,41 +7,81 @@
   var closeBtn = document.getElementById('search-close');
   var resultsList = document.getElementById('search-results');
   var emptyState = document.getElementById('search-empty');
+  var errorState = document.getElementById('search-error');
   var initialState = document.getElementById('search-initial');
   var queryText = document.getElementById('search-query-text');
-  var triggerBtn = document.getElementById('search-trigger');
 
   var indexData = null;
   var isLoading = false;
+  var loadFailed = false;
   var activeIndex = -1;
   var previousActiveElement = null;
+  var pendingCallbacks = [];
 
   function loadIndex(callback) {
     if (indexData) {
-      if (callback) callback(indexData);
+      if (callback) callback(null, indexData);
       return;
     }
+    if (loadFailed) {
+      if (callback) callback(new Error('Index failed to load'), []);
+      return;
+    }
+
+    if (callback) pendingCallbacks.push(callback);
     if (isLoading) return;
     isLoading = true;
-    var url = modal.getAttribute('data-index') || '/index.json';
-    fetch(url)
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        indexData = data;
-        isLoading = false;
-        if (callback) callback(indexData);
-      })
-      .catch(function (err) {
-        console.error('Failed to load search index', err);
-        isLoading = false;
+
+    var primaryUrl = modal.getAttribute('data-index') || '/index.json';
+
+    function flushCallbacks(err, data) {
+      isLoading = false;
+      var queue = pendingCallbacks.slice();
+      pendingCallbacks = [];
+      queue.forEach(function (cb) {
+        try { cb(err, data); } catch (e) { console.error(e); }
       });
+    }
+
+    function doFetch(targetUrl, isFallback) {
+      fetch(targetUrl)
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          indexData = Array.isArray(data) ? data : [];
+          loadFailed = false;
+          flushCallbacks(null, indexData);
+        })
+        .catch(function (err) {
+          if (!isFallback && targetUrl.startsWith('/')) {
+            // Try relative URL fallback (for sites in subdirectories or local file previews)
+            var relUrl = targetUrl.replace(/^\/+/, '');
+            doFetch(relUrl, true);
+            return;
+          }
+          console.warn('Search index load error:', err);
+          loadFailed = true;
+          flushCallbacks(err, []);
+        });
+    }
+
+    doFetch(primaryUrl, false);
   }
 
   function openSearch() {
     previousActiveElement = document.activeElement;
     modal.hidden = false;
     document.body.classList.add('search-open');
-    loadIndex();
+    if (errorState) errorState.hidden = true;
+
+    loadIndex(function (err, data) {
+      if (!modal.hidden && input.value.trim()) {
+        executeSearch(input.value);
+      }
+    });
+
     setTimeout(function () {
       input.focus();
       input.select();
@@ -56,10 +96,15 @@
     }
   }
 
-  if (triggerBtn) {
-    triggerBtn.addEventListener('click', openSearch);
-    triggerBtn.addEventListener('mouseenter', function () { loadIndex(); }, { once: true });
-  }
+  // Bind all search trigger elements across the page
+  document.querySelectorAll('#search-trigger, .search-trigger, [data-search-trigger]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      openSearch();
+    });
+    btn.addEventListener('mouseenter', function () { loadIndex(); }, { once: true });
+  });
+
   if (closeBtn) closeBtn.addEventListener('click', closeSearch);
   if (backdrop) backdrop.addEventListener('click', closeSearch);
 
@@ -114,11 +159,11 @@
         firstIdx = idx;
       }
     }
-    var start = Math.max(0, firstIdx - 60);
-    var end = Math.min(content.length, firstIdx + 120);
+    var start = Math.max(0, firstIdx - 50);
+    var end = Math.min(content.length, firstIdx + 110);
     if (firstIdx === -1) {
       start = 0;
-      end = Math.min(content.length, 140);
+      end = Math.min(content.length, 120);
     }
     var snippet = content.slice(start, end);
     if (start > 0) snippet = '...' + snippet;
@@ -132,14 +177,26 @@
       resultsList.innerHTML = '';
       initialState.hidden = false;
       emptyState.hidden = true;
+      if (errorState) errorState.hidden = true;
       activeIndex = -1;
       return;
     }
 
     initialState.hidden = true;
+    if (errorState) errorState.hidden = true;
     var tokens = q.split(/\s+/).filter(Boolean);
 
-    loadIndex(function (pages) {
+    loadIndex(function (err, pages) {
+      if (err) {
+        resultsList.innerHTML = '';
+        emptyState.hidden = true;
+        if (errorState) {
+          errorState.hidden = false;
+          errorState.textContent = 'Unable to load search index (/index.json). Ensure outputs.home = ["HTML", "RSS", "JSON"] is set in hugo.toml.';
+        }
+        return;
+      }
+
       var matched = [];
       for (var i = 0; i < pages.length; i++) {
         var page = pages[i];
@@ -181,7 +238,7 @@
       }
 
       matched.sort(function (a, b) { return b.score - a.score; });
-      renderResults(matched.slice(0, 12), tokens, q);
+      renderResults(matched.slice(0, 15), tokens, q);
     });
   }
 
@@ -273,6 +330,12 @@
   }
 
   input.addEventListener('input', function () {
+    executeSearch(input.value);
+  });
+  input.addEventListener('search', function () {
+    executeSearch(input.value);
+  });
+  input.addEventListener('keyup', function () {
     executeSearch(input.value);
   });
 
