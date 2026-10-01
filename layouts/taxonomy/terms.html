@@ -1,0 +1,17 @@
+{{ define "main" }}
+<div class="page taxonomy-terms">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    <p class="lede">{{ site.Params.termsDescription | default (printf "Browse all %d topics and tags." (len .Data.Terms)) }}</p>
+  </header>
+
+  <div class="tag-cloud">
+    {{ range .Data.Terms.Alphabetical }}
+      <a href="{{ .Page.RelPermalink }}" class="tag-chip">
+        <span class="tag-name">#{{ .Page.Title }}</span>
+        <span class="tag-count">{{ .Count }}</span>
+      </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

@@ -5,7 +5,15 @@
     <p class="meta">
       {{ with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "January 2, 2006" }}</time>{{ end }}
       {{ if .ReadingTime }}<span>{{ .ReadingTime }} min read</span>{{ end }}
+      {{ with .WordCount }}<span>{{ . }} words</span>{{ end }}
     </p>
+    {{ with .Params.tags }}
+      <div class="post-tags" aria-label="Tags">
+        {{ range . }}
+          <a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag-badge">#{{ . }}</a>
+        {{ end }}
+      </div>
+    {{ end }}
   </header>
   <div class="prose" id="post-body">{{ .Content }}</div>
 </article>

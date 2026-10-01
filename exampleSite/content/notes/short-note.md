@@ -1,6 +1,7 @@
 ---
 title: "A short note"
 date: 2026-09-25
+tags: ["notes", "quicktips", "python"]
 ---
 Nothing to scroll here, so no percentage shows.
 

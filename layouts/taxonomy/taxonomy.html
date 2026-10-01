@@ -1,0 +1,23 @@
+{{ define "main" }}
+<div class="page taxonomy-list">
+  <header class="page-header">
+    <div class="taxonomy-meta">
+      <a href="{{ "/tags/" | relURL }}" class="back-link">&larr; All tags</a>
+    </div>
+    <h1>#{{ .Title }}</h1>
+    <p class="lede">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }} tagged with <em>#{{ .Title }}</em></p>
+  </header>
+
+  <ul class="post-list">
+    {{ range .Pages }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <div class="post-item-meta">
+          {{ with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "Jan 2, 2006" }}</time>{{ end }}
+          {{ if .ReadingTime }}<span class="read-time">{{ .ReadingTime }} min</span>{{ end }}
+        </div>
+      </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

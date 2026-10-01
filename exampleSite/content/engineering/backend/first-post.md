@@ -1,6 +1,7 @@
 ---
 title: "A first long post"
 date: 2026-09-20
+tags: ["engineering", "backend", "architecture"]
 ---
 
 ## Section 1
