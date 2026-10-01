@@ -42,16 +42,16 @@ a{color:var(--link)}
 .side-heading{margin:0 0 .6rem;letter-spacing:.08em;color:var(--faint)}
 .side-mid{flex:1}
 
-#TableOfContents ul,.tree{list-style:none;margin:0;padding:0}
+#TableOfContents ul,.tree,.toc-single{list-style:none;margin:0;padding:0}
 #TableOfContents ul ul,.tree .tree{padding-left:1.15rem}
-#TableOfContents li,.tree li{position:relative;padding-left:1.15rem}
-#TableOfContents li::before,.tree li::before{content:"\2514";position:absolute;left:0;top:.1rem;color:var(--faint)}
+#TableOfContents li,.tree li,.toc-single li{position:relative;padding-left:1.15rem}
+#TableOfContents li::before,.tree li::before,.toc-single li::before{content:"\2514";position:absolute;left:0;top:.1rem;color:var(--faint)}
 /* with JS: show top-level headings only, expand the section being read */
 .js #TableOfContents li>ul{display:none}
 .js #TableOfContents li.open>ul{display:block}
-#TableOfContents a{display:block;padding:.12rem 0;color:var(--muted);text-decoration:none}
-#TableOfContents a:hover{color:var(--fg)}
-#TableOfContents a.active{color:var(--fg);font-weight:700}
+#TableOfContents a,.toc-single a{display:block;padding:.12rem 0;color:var(--muted);text-decoration:none}
+#TableOfContents a:hover,.toc-single a:hover{color:var(--fg)}
+#TableOfContents a.active,.toc-single a.active{color:var(--fg);font-weight:700}
 
 .tree .row{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
 .tree .node{background:none;border:0;padding:.12rem 0;font:inherit;color:var(--muted);text-align:left;cursor:pointer;text-decoration:none}

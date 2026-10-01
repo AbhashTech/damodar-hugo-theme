@@ -67,7 +67,7 @@
       var articleTop = window.scrollY + rect.top;
       var articleHeight = article.offsetHeight;
       var scrollable = articleTop + articleHeight - window.innerHeight;
-      if (scrollable <= 10) {
+      if (articleHeight <= window.innerHeight * 0.85 || scrollable <= 80) {
         wrap.hidden = true;
         return;
       }
@@ -81,7 +81,7 @@
       }
     } else {
       var max = document.documentElement.scrollHeight - window.innerHeight;
-      if (max <= 4) { wrap.hidden = true; return; }
+      if (max <= 100) { wrap.hidden = true; return; }
       wrap.hidden = false;
       p = window.scrollY <= 10 ? 0 : Math.round((window.scrollY / max) * 100);
     }

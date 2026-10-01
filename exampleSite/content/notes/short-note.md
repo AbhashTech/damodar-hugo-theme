@@ -5,7 +5,11 @@ author: "Thariq Shihipar"
 description: "A quick note exploring syntax highlighting, callouts, and code copy in Damodar."
 tags: ["notes", "quicktips", "python"]
 ---
-Nothing to scroll here, so no percentage shows.
+## Overview
+
+This is a concise technical note. The sidebar displays **ON THIS PAGE** with the note's headings, while the reading progress bar is automatically suppressed because the content fits on screen without long scrolling.
+
+## Python Snippet
 
 Here is a quick Python sample:
 
@@ -23,7 +27,7 @@ if __name__ == "__main__":
     print(fibonacci(8))
 ```
 
-And JavaScript:
+## JavaScript Snippet
 
 ```javascript
 const greet = (name) => {
@@ -31,6 +35,8 @@ const greet = (name) => {
 };
 greet("World");
 ```
+
+## Tips & Callouts
 
 {{< callout type="tip" title="Pro Tip" >}}
 You can quickly open search anywhere using <kbd>Ctrl</kbd>+<kbd>K</kbd> or <kbd>/</kbd>.
