@@ -1,0 +1,29 @@
+{{- if or (not hugo.IsServer) site.Params.analytics.dev -}}
+  {{- /* Plausible Analytics */ -}}
+  {{- with site.Params.plausible -}}
+    {{- if .domain -}}
+      <script defer data-domain="{{ .domain }}" src="{{ .scriptUrl | default "https://plausible.io/js/script.js" }}"></script>
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Fathom Analytics */ -}}
+  {{- with site.Params.fathom -}}
+    {{- if .siteId -}}
+      <script src="{{ .scriptUrl | default "https://cdn.usefathom.com/script.js" }}" data-site="{{ .siteId }}" defer></script>
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Cloudflare Web Analytics */ -}}
+  {{- with site.Params.cloudflareAnalytics -}}
+    {{- if .token -}}
+      <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ .token }}"}'></script>
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Umami Analytics */ -}}
+  {{- with site.Params.umami -}}
+    {{- if and .websiteId .scriptUrl -}}
+      <script defer src="{{ .scriptUrl }}" data-website-id="{{ .websiteId }}"></script>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
