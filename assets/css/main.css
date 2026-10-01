@@ -154,8 +154,8 @@ h1{font:600 2.1rem/1.2 var(--sans);letter-spacing:-.02em;margin:0 0 .6rem}
 .callout-important .callout-icon,.callout-important .callout-title{color:#8b5cf6}
 .callout-warning{border-left-color:#f59e0b}
 .callout-warning .callout-icon,.callout-warning .callout-title{color:#f59e0b}
-.callout-caution{border-left-color:#ef4444}
-.callout-caution .callout-icon,.callout-caution .callout-title{color:#ef4444}
+.callout-caution,.callout-danger{border-left-color:#ef4444}
+.callout-caution .callout-icon,.callout-caution .callout-title,.callout-danger .callout-icon,.callout-danger .callout-title{color:#ef4444}
 
 /* Prose enhancements */
 .prose kbd{font:11px var(--mono);background:var(--panel);border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:.15em .4em;color:var(--fg)}
