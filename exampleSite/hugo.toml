@@ -20,6 +20,7 @@ theme = "damodar"
   tagline = "Notes on building things."
   showRecent = true           # recent posts on home page
   recentCount = 5
+  recentTitle = "Latest Writings"
   footerText = "Notes on building things."
   copyright = ""              # leave empty for default (© current year Title)
   twitter = ""                # e.g. "@username"

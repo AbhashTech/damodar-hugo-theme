@@ -12,7 +12,7 @@
 <div class="page home">
   {{ if $showRecent }}
     <header class="home-feed-header">
-      <h1 class="home-feed-title">{{ site.Params.recentTitle | default "Recent" }}</h1>
+      <h1 class="home-feed-title">{{ site.Params.recentTitle | default "Latest Writings" }}</h1>
       {{ if and $paginator (gt $paginator.TotalPages 1) }}
         <span class="pagination-badge">Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
       {{ end }}

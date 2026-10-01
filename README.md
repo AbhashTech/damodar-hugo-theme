@@ -152,7 +152,7 @@ locale = "en"
   footerText = "Published with Hugo and Damodar theme."
   showRecent = true              # show recent posts list on the home page
   recentCount = 5                # items per page for home page recent list (paginated)
-  recentTitle = "Recent"         # heading for home page feed
+  recentTitle = "Latest Writings" # heading for home page feed
   ogImage = "/images/og-default.png" # default social share card
   # Sidebar section headings (defaults: "ON THIS PAGE" for TOC, "NAVIGATION" for site sections)
   tocTitle = "ON THIS PAGE"
