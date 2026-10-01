@@ -141,7 +141,9 @@ locale = "en"
   showRecent = true              # show recent posts list on the home page
   recentCount = 5
   ogImage = "/images/og-default.png" # default social share card
-  twitter = "@yourusername"
+  # Sidebar section headings (defaults: "ON THIS PAGE" for TOC, "NAVIGATION" for site sections)
+  tocTitle = "ON THIS PAGE"
+  navigationTitle = "NAVIGATION"
 
   # Repository link for "Edit this page" action on posts
   repo = "https://github.com/yourusername/your-repo"

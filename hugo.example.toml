@@ -20,6 +20,9 @@ theme = "damodar"
   copyright = ""              # leave empty for default (© current year Title)
   twitter = ""                # e.g. "@username"
   ogImage = ""                # path to default social share card image
+  # Sidebar section headings (defaults: "ON THIS PAGE" for TOC, "NAVIGATION" for site sections)
+  tocTitle = "ON THIS PAGE"
+  navigationTitle = "NAVIGATION"
   # Repository link for "Edit this page" links on single posts
   repo = "https://github.com/username/my-site"
   repoBranch = "main"
