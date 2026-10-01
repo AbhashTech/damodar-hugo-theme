@@ -91,6 +91,7 @@
   <div class="prose" id="post-body">{{ .Content }}</div>
 
   {{ partial "share.html" . }}
+  {{ partial "author-bio.html" . }}
 
   {{ $related := site.RegularPages.Related . | first 3 }}
   {{ with $related }}
