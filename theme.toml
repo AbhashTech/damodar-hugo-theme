@@ -1,4 +1,11 @@
 name = "Damodar"
 license = "MIT"
-description = "Docs-style theme: left sidebar with logo, theme toggle, heading tree, read progress and footer links."
+description = "Fast, docs-style Hugo theme: left sidebar with logo, theme toggle, tree navigation, instant search modal, tag cloud, dual-theme syntax highlighting, callouts, and reading progress."
+homepage = "https://github.com/kunalgautam/damodar"
+tags = ["docs", "minimal", "search", "syntax-highlighting", "dark-mode", "tags", "blog", "clean"]
+features = ["search", "syntax-highlighting", "dark-mode", "tags", "reading-progress", "breadcrumbs", "callouts", "responsive"]
 min_version = "0.120.0"
+
+[author]
+  name = "Kunal Gautam"
+  homepage = "https://ikunal.in"

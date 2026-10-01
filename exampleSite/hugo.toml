@@ -11,6 +11,11 @@ theme = "damodar"
   tagline = "Notes on building things."
   showRecent = true           # recent posts on home page
   recentCount = 5
+  footerText = "Notes on building things."
+  copyright = ""              # leave empty for default (© current year Title)
+  twitter = ""                # e.g. "@username"
+  ogImage = ""                # path to default social share card image
+  termsDescription = "Browse all topics and tags."
 
 [markup.tableOfContents]
   startLevel = 2
