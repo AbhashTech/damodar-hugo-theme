@@ -1,5 +1,5 @@
 baseURL = "https://example.org/"
-languageCode = "en"
+locale = "en"
 title = "My Notes"
 theme = "damodar"
 
@@ -16,6 +16,9 @@ theme = "damodar"
   startLevel = 2
   endLevel = 3
   ordered = false
+
+[markup.goldmark.renderer]
+  unsafe = true
 
 [markup.highlight]
   noClasses = false

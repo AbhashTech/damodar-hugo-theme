@@ -29,3 +29,14 @@ const greet = (name) => {
 };
 greet("World");
 ```
+
+{{< callout type="tip" title="Pro Tip" >}}
+You can quickly open search anywhere using <kbd>Ctrl</kbd>+<kbd>K</kbd> or <kbd>/</kbd>.
+{{< /callout >}}
+
+> [!NOTE]
+> GitHub-style blockquote alerts are automatically converted into styled callout components!
+
+> [!WARNING]
+> Remember to run `hugo --minify` before deploying to production.
+

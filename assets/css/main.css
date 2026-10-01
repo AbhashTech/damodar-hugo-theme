@@ -109,9 +109,35 @@ h1{font:600 2.1rem/1.2 var(--sans);letter-spacing:-.02em;margin:0 0 .6rem}
 .prose pre{position:relative;margin:1.5rem 0;background:var(--code-bg,#faf8f4);color:var(--fg);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font:13.5px/1.6 var(--mono)}
 :root[data-theme="dark"] .prose pre{background:#181816;color:#ecebe4}
 .prose pre code{background:none;padding:0;color:inherit}
-.prose blockquote{margin:0 0 1.2rem;padding-left:1rem;border-left:3px solid var(--rule);color:var(--muted)}
-.prose table{border-collapse:collapse;width:100%;display:block;overflow-x:auto}
-.prose th,.prose td{border-bottom:1px solid var(--rule);padding:.4rem .6rem;text-align:left}
+.prose blockquote{margin:1.5rem 0;padding:.7rem 1.1rem;border-left:3px solid var(--rule);color:var(--muted);background:var(--panel);border-radius:0 6px 6px 0}
+.prose blockquote p:last-child{margin-bottom:0}
+
+/* Callout admonition boxes */
+.callout{position:relative;margin:1.5rem 0;padding:.85rem 1.1rem;background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--muted);border-radius:6px;font:15px/1.6 var(--sans)}
+.callout p:last-child{margin-bottom:0}
+.callout-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;font:600 13px/1.3 var(--mono);color:var(--fg);text-transform:uppercase;letter-spacing:.04em}
+.callout-icon{display:inline-flex;align-items:center;line-height:1}
+.callout-icon svg{width:16px;height:16px}
+.callout-note{border-left-color:#3b82f6}
+.callout-note .callout-icon,.callout-note .callout-title{color:#3b82f6}
+.callout-tip{border-left-color:#10b981}
+.callout-tip .callout-icon,.callout-tip .callout-title{color:#10b981}
+.callout-important{border-left-color:#8b5cf6}
+.callout-important .callout-icon,.callout-important .callout-title{color:#8b5cf6}
+.callout-warning{border-left-color:#f59e0b}
+.callout-warning .callout-icon,.callout-warning .callout-title{color:#f59e0b}
+.callout-caution{border-left-color:#ef4444}
+.callout-caution .callout-icon,.callout-caution .callout-title{color:#ef4444}
+
+/* Prose enhancements */
+.prose kbd{font:11px var(--mono);background:var(--panel);border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:.15em .4em;color:var(--fg)}
+.prose mark{background:rgba(194,77,44,.18);color:var(--accent);padding:.1em .3em;border-radius:2px}
+.prose hr{border:0;border-top:1px solid var(--rule);margin:2.5rem 0}
+.prose table{border-collapse:collapse;width:100%;margin:1.5rem 0;display:table;overflow-x:auto}
+.prose th{background:var(--panel);font:600 13px var(--mono);color:var(--fg);padding:.6rem .8rem;border:1px solid var(--rule)}
+.prose td{padding:.5rem .8rem;border:1px solid var(--rule);font-size:14.5px}
+.prose tr:nth-child(even){background:rgba(0,0,0,.02)}
+:root[data-theme="dark"] .prose tr:nth-child(even){background:rgba(255,255,255,.02)}
 
 /* ---- footer (min 500px) ---- */
 .content{min-height:60vh}
