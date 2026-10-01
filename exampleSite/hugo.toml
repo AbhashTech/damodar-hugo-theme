@@ -16,6 +16,15 @@ theme = "damodar"
   twitter = ""                # e.g. "@username"
   ogImage = ""                # path to default social share card image
   termsDescription = "Browse all topics and tags."
+  repo = "https://github.com/kunalgautam/damodar"
+  repoBranch = "master"
+
+  [params.author]
+    name = "Damodar Team"
+    bio = "Technical writers and engineers designing high-performance Hugo documentation."
+    avatar = "/logo.svg"
+    github = "kunalgautam"
+    website = "https://example.org"
 
 [markup.tableOfContents]
   startLevel = 2
@@ -41,10 +50,14 @@ theme = "damodar"
   url = "/tags/"
   weight = 2
 [[menus.main]]
+  name = "Archive"
+  url = "/archive/"
+  weight = 3
+[[menus.main]]
   name = "About"
   url = "/about/"
-  weight = 3
+  weight = 4
 [[menus.main]]
   name = "Contact"
   url = "/contact/"
-  weight = 4
+  weight = 5

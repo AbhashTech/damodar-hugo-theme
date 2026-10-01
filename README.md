@@ -11,17 +11,23 @@ A clean, fast, documentation-and-notes Hugo theme designed for engineers, resear
 ## Key Features
 
 - 🔍 **Dual-Engine Search**: Keyboard-driven modal dialog (`⌘K` / `Ctrl+K` or `/`) with native [Pagefind](https://pagefind.app/) indexing (`data-pagefind-*` hooks) and automatic fallback to a zero-config client-side JSON search index.
-- 🌓 **Flicker-Free Dark/Light Mode**: Inline blocking detection prevents FOUC (flash of unstyled content), synchronized with system color preferences (`prefers-color-scheme`) and persistent via `localStorage`.
-- 🌲 **Sticky Navigation & Dynamic TOC**: Independent scrolling desktop sidebar with collapsible section hierarchy and `IntersectionObserver` scroll-spy Table of Contents that tracks reading progress up to 100%.
+- 🌓 **Flicker-Free Dark/Light Mode**: Inline blocking detection prevents FOUC, synchronized with system color preferences (`prefers-color-scheme`) and persistent via `localStorage`. Live re-renders diagrams when switching themes.
+- 🌲 **Sticky Navigation & Dynamic TOC**: Independent scrolling desktop sidebar with collapsible section hierarchy, floating back-to-top button, and `IntersectionObserver` scroll-spy Table of Contents that tracks reading progress up to 100%.
+- ⌨️ **Keyboard Hotkeys & Navigation**: Global shortcuts modal (<kbd>?</kbd>), theme toggle (<kbd>T</kbd>), sequential article navigation (<kbd>J</kbd> / <kbd>K</kbd>), and home shortcut (<kbd>H</kbd>).
+- 🧩 **Interactive Component Shortcodes**: Accessible multi-language tabs (`{{< tabs >}}`), collapsible accordions (`{{< details >}}`), visual directory file trees (`{{< filetree >}}`), and admonitions (`{{< callout >}}`).
+- 🖼️ **Image Lightbox & Footnote Popovers**: Zero-dependency click-to-zoom image lightbox with backdrop blur, and in-place hover/click footnote tooltips.
 - ⚡ **Enhanced Markdown Render Hooks**:
   - **Code Blocks**: Header bar with language badges, optional filename/title displays, and one-click Clipboard API copy button.
   - **Headings**: Clean, accessible permalink anchors (`#`) on hover and focus for `<h2>`–`<h6>`.
   - **Images**: Automatic `<picture>` element generation with Hugo Pipes WebP and AVIF conversions, responsive `srcset`, `loading="lazy"`, and `decoding="async"`.
   - **Links**: Smart external link detection appending `target="_blank"` and `rel="noopener noreferrer"` while preserving relative internal links.
-- 📐 **Conditional KaTeX & Mermaid.js**: Zero-bloat conditional asset loading when `math: true` or `mermaid: true` is defined in page front matter.
-- 💡 **Callouts & GitHub-Style Alerts**: Dedicated `{{< callout >}}` shortcodes and automated styling for GitHub markdown alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`, `[!DANGER]`).
+- 🚀 **Instant Navigation & Performance**: W3C Speculation Rules API and mouseover prefetching for sub-millisecond page transitions.
+- 📐 **Conditional KaTeX & Mermaid.js**: Zero-bloat conditional asset loading when `math: true` or `mermaid: true` is defined in page front matter, with live theme re-rendering.
+- 💡 **Callouts & GitHub-Style Alerts**: Dedicated shortcodes and automated styling for GitHub markdown alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`, `[!DANGER]`).
+- ✍️ **Author Bio, Share & GitHub Edit**: Rich author profile cards with avatars and social links, one-click link copying, social sharing, and direct GitHub content editing links.
+- 📜 **Chronological Timeline Archive**: Dedicated archive page layout grouping all posts by year with tag badges and count statistics.
+- 🖨️ **Distraction-Free Print / PDF Styling**: Dedicated `@media print` rules hiding navigation and chrome for clean paper and PDF exports.
 - 📚 **Series & Related Content**: In-article `series` taxonomy navigation box and automated 2–3 card related posts section powered by Hugo's related content engine.
-- 📊 **Rich Post Metadata**: Clear metadata tree displaying author, publish date, last modified date, word count, reading time, and interactive tag badges.
 - 💬 **Privacy-Friendly Comments & Analytics**: Pluggable GitHub discussions ([Giscus](https://giscus.app/) & [Utterances](https://utteranc.es/)) alongside privacy-respecting analytics ([Plausible](https://plausible.io/), [Fathom](https://usefathom.com/), Cloudflare Web Analytics, [Umami](https://umami.is/)).
 - 🌐 **SEO & Structured Data**: Complete JSON-LD schemas (`WebSite`, `BreadcrumbList`, `BlogPosting`), Open Graph protocol, Twitter Cards, canonical tags, and RSS autodiscovery.
 
@@ -33,16 +39,17 @@ A clean, fast, documentation-and-notes Hugo theme designed for engineers, resear
 themes/damodar/
 ├── assets/
 │   ├── css/
-│   │   ├── main.css           # Core layout, sidebar, typography, callouts & themes
+│   │   ├── main.css           # Core layout, sidebar, typography, callouts, lightbox & print
 │   │   └── syntax.css         # Dual-mode light & dark Chroma syntax themes
 │   └── js/
-│       ├── main.js            # Sidebar drawer, TOC scroll spy, copy buttons, alerts
+│       ├── main.js            # Sidebar drawer, TOC scroll spy, tabs, footnotes, shortcuts
 │       └── search.js          # Search modal dialog, Pagefind & JSON engine
 ├── layouts/
 │   ├── _default/
-│   │   ├── baseof.html        # Base skeleton with Pagefind hooks & sidebar grid
+│   │   ├── archive.html       # Chronological timeline archive layout
+│   │   ├── baseof.html        # Base skeleton with Pagefind hooks, shortcuts & back-to-top
 │   │   ├── list.html          # Taxonomy & section archive listings
-│   │   └── single.html        # Article layout with meta tree, series & pager
+│   │   └── single.html        # Article layout with meta tree, author bio, share & pager
 │   ├── _markup/
 │   │   ├── render-codeblock.html # Code block hook with title, lang & copy button
 │   │   ├── render-heading.html   # Heading hook with permalink anchor links
@@ -50,18 +57,26 @@ themes/damodar/
 │   │   └── render-link.html      # Link hook with external target/rel detection
 │   ├── partials/
 │   │   ├── analytics.html     # Privacy-friendly analytics partial
+│   │   ├── author-bio.html    # Author bio card with avatar and social profiles
 │   │   ├── breadcrumbs.html   # Breadcrumb navigation bar
 │   │   ├── comments.html      # Giscus / Utterances comments partial
-│   │   ├── footer.html        # Multi-column site footer
+│   │   ├── footer.html        # Full-width site footer
 │   │   ├── head.html          # HTML head, styles, metadata & blocking theme init
 │   │   ├── math.html          # KaTeX auto-render script partial
-│   │   ├── mermaid.html       # Mermaid.js initialization partial
+│   │   ├── mermaid.html       # Mermaid.js with live theme-switch re-render
+│   │   ├── prefetch.html      # Speculation Rules & hover prefetching partial
 │   │   ├── schema.html        # JSON-LD structured data partial
 │   │   ├── search-modal.html  # Keyboard-accessible search modal dialog
 │   │   ├── sectiontree.html   # Recursive collapsible section navigation
+│   │   ├── share.html         # GitHub edit link, copy link, and social shares
+│   │   ├── shortcuts-modal.html # Keyboard shortcuts dialog
 │   │   └── sidebar.html       # Sticky sidebar container & Table of Contents
 │   ├── shortcodes/
-│   │   └── callout.html       # Shortcode for tip, note, warning, danger callouts
+│   │   ├── callout.html       # Shortcode for tip, note, warning, danger callouts
+│   │   ├── details.html       # Collapsible accordion shortcode
+│   │   ├── filetree.html      # Directory tree structure shortcode
+│   │   ├── tab.html           # Individual tab panel shortcode
+│   │   └── tabs.html          # Accessible tabs container shortcode
 │   └── index.json             # JSON search index template
 ```
 
@@ -128,9 +143,18 @@ locale = "en"
   ogImage = "/images/og-default.png" # default social share card
   twitter = "@yourusername"
 
+  # Repository link for "Edit this page" action on posts
+  repo = "https://github.com/yourusername/your-repo"
+  repoBranch = "main"
+
   # Default author details
   [params.author]
     name = "Alex Engineer"
+    bio = "Systems architect writing about distributed protocols and frontend tooling."
+    avatar = "/images/avatar.jpg"
+    github = "yourusername"
+    twitter = "yourusername"
+    website = "https://example.org"
 
   # Comments (choose Giscus or Utterances)
   [params.giscus]
@@ -189,9 +213,14 @@ locale = "en"
   weight = 2
 
 [[menus.main]]
+  name = "Archive"
+  url = "/archive/"
+  weight = 3
+
+[[menus.main]]
   name = "About"
   url = "/about/"
-  weight = 3
+  weight = 4
 ```
 
 ---
@@ -278,6 +307,74 @@ Native blockquote alerts are automatically converted into styled callouts:
 
 ---
 
+### Tabs Component
+
+Display multi-variant instructions (e.g., package managers, languages) with accessible tab switches:
+
+````markdown
+{{< tabs >}}
+{{< tab "Go" >}}
+```go
+package main
+func main() {}
+```
+{{< /tab >}}
+{{< tab "Python" >}}
+```python
+def main():
+    pass
+```
+{{< /tab >}}
+{{< /tabs >}}
+````
+
+---
+
+### Collapsible Details / Accordions
+
+Hide secondary reference information or solutions behind an accordion:
+
+```markdown
+{{< details title="Click to view deep dive" open=false >}}
+Detailed explanation or additional reference notes.
+{{< /details >}}
+```
+
+---
+
+### File Tree Hierarchy
+
+Show visual directory hierarchies with automated folder and file icons:
+
+```markdown
+{{< filetree title="Project Structure" >}}
+- content/
+  - posts/
+    - first-post.md
+    - second-post.md
+  - notes/
+    - _index.md
+- layouts/
+  - _default/
+    - baseof.html
+- hugo.toml
+{{< /filetree >}}
+```
+
+---
+
+### Image Lightbox & Zoom
+
+Any markdown image (`![alt](img.png)`) can be clicked to open in an in-place enlarged lightbox with backdrop blur. Press <kbd>Esc</kbd> or click outside to dismiss.
+
+---
+
+### Footnote Tooltip Popovers
+
+Standard markdown footnotes (`[^1]`) automatically render in-place interactive popovers on hover or click, eliminating disruptive screen jumps.
+
+---
+
 ### Responsive Image Pipeline
 
 Standard markdown image syntax automatically runs through Hugo Pipes:
@@ -309,7 +406,7 @@ When `math: true` is enabled in front matter, write LaTeX equations using dollar
 
 ### Mermaid Diagrams
 
-When `mermaid: true` is enabled in front matter, create diagrams using standard code fences:
+When `mermaid: true` is enabled in front matter, create diagrams using standard code fences (automatically re-rendered live when toggling dark/light mode):
 
 ````markdown
 ```mermaid
@@ -325,11 +422,18 @@ graph TD
 
 ## Keyboard Shortcuts
 
+Press <kbd>?</kbd> anywhere on the site to display the interactive shortcuts modal:
+
 | Shortcut | Action |
 |---|---|
 | <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> | Open / close search modal dialog |
 | <kbd>/</kbd> | Open search modal (when not inside an input) |
-| <kbd>Esc</kbd> | Close search modal or mobile sidebar drawer |
+| <kbd>T</kbd> | Toggle light / dark mode |
+| <kbd>J</kbd> | Navigate to next article |
+| <kbd>K</kbd> | Navigate to previous article |
+| <kbd>H</kbd> | Navigate to home page |
+| <kbd>?</kbd> | Open keyboard shortcuts modal |
+| <kbd>Esc</kbd> | Close search modal, shortcuts dialog, or image lightbox |
 | <kbd>↑</kbd> / <kbd>↓</kbd> | Navigate search results |
 | <kbd>Enter</kbd> | Navigate to selected search result |
 

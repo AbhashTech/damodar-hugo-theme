@@ -20,10 +20,17 @@ theme = "damodar"
   copyright = ""              # leave empty for default (© current year Title)
   twitter = ""                # e.g. "@username"
   ogImage = ""                # path to default social share card image
-  termsDescription = "Browse all topics and tags."
+  # Repository link for "Edit this page" links on single posts
+  repo = "https://github.com/username/my-site"
+  repoBranch = "main"
 
   [params.author]
     name = "Author Name"
+    bio = "Engineer, writer, and open-source enthusiast."
+    avatar = "/avatar.jpg"
+    github = "username"
+    twitter = "username"
+    website = "https://example.org"
 
   # Comments via Giscus
   # [params.giscus]
@@ -72,10 +79,14 @@ theme = "damodar"
   url = "/tags/"
   weight = 2
 [[menus.main]]
+  name = "Archive"
+  url = "/archive/"
+  weight = 3
+[[menus.main]]
   name = "About"
   url = "/about/"
-  weight = 3
+  weight = 4
 [[menus.main]]
   name = "Contact"
   url = "/contact/"
-  weight = 4
+  weight = 5
