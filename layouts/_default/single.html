@@ -63,7 +63,50 @@
       {{ end }}
     </div>
   </header>
+
+  {{ with .Params.series }}
+    <aside class="series-box" aria-label="Series navigation" data-pagefind-ignore>
+      {{ range $name := . }}
+        {{ with index site.Taxonomies.series ($name | urlize) }}
+          <div class="series-header">
+            <span class="series-badge">SERIES</span>
+            <span class="series-title">Part of: <a href="{{ .Page.RelPermalink }}">{{ $name }}</a></span>
+          </div>
+          <ol class="series-list">
+            {{ range .Pages.ByDate }}
+              <li class="{{ if eq . $ }}current{{ end }}">
+                {{ if eq . $ }}
+                  <span class="series-current">{{ .Title }}</span> <span class="series-mark">(this article)</span>
+                {{ else }}
+                  <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                {{ end }}
+              </li>
+            {{ end }}
+          </ol>
+        {{ end }}
+      {{ end }}
+    </aside>
+  {{ end }}
+
   <div class="prose" id="post-body">{{ .Content }}</div>
+
+  {{ $related := site.RegularPages.Related . | first 3 }}
+  {{ with $related }}
+    <section class="related-posts" aria-label="Related articles" data-pagefind-ignore>
+      <h3 class="related-heading">Related Articles</h3>
+      <div class="related-grid">
+        {{ range . }}
+          <a class="related-card" href="{{ .RelPermalink }}">
+            <span class="related-date">{{ with or .PublishDate .Date }}{{ .Format "Jan 02, 2006" }}{{ end }}</span>
+            <h4 class="related-title">{{ .Title }}</h4>
+            {{ with or .Description .Summary }}
+              <p class="related-desc">{{ . | plainify | truncate 90 }}</p>
+            {{ end }}
+          </a>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
 
   {{ $prev := .PrevInSection }}
   {{ $next := .NextInSection }}
