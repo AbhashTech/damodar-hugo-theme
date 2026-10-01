@@ -1,0 +1,64 @@
+{{ $pag := .Paginator }}
+{{ if and $pag (gt $pag.TotalPages 1) }}
+<nav class="pagination" aria-label="Pagination">
+  <div class="pagination-inner">
+    {{ if $pag.HasPrev }}
+      <a class="pagination-action pagination-prev" href="{{ $pag.Prev.URL }}" rel="prev" aria-label="Previous page">
+        <span aria-hidden="true">&larr;</span>
+        <span class="pagination-label">Prev</span>
+      </a>
+    {{ else }}
+      <span class="pagination-action pagination-prev disabled" aria-disabled="true">
+        <span aria-hidden="true">&larr;</span>
+        <span class="pagination-label">Prev</span>
+      </span>
+    {{ end }}
+
+    <ul class="pagination-numbers">
+      {{ $total := $pag.TotalPages }}
+      {{ $current := $pag.PageNumber }}
+      {{ $window := 1 }}
+
+      {{ range $pag.Pagers }}
+        {{ $num := .PageNumber }}
+        {{ $show := false }}
+
+        {{ if le $total 7 }}
+          {{ $show = true }}
+        {{ else if or (eq $num 1) (eq $num $total) }}
+          {{ $show = true }}
+        {{ else if and (ge $num (sub $current $window)) (le $num (add $current $window)) }}
+          {{ $show = true }}
+        {{ end }}
+
+        {{ if $show }}
+          <li class="pagination-item{{ if eq $num $current }} is-active{{ end }}">
+            {{ if eq $num $current }}
+              <span class="pagination-link current" aria-current="page">{{ $num }}</span>
+            {{ else }}
+              <a class="pagination-link" href="{{ .URL }}" aria-label="Page {{ $num }}">{{ $num }}</a>
+            {{ end }}
+          </li>
+        {{ else if or (and (eq $num 2) (gt (sub $current $window) 2)) (and (eq $num (sub $total 1)) (lt (add $current $window) (sub $total 1))) }}
+          <li class="pagination-ellipsis" aria-hidden="true"><span>&hellip;</span></li>
+        {{ end }}
+      {{ end }}
+    </ul>
+
+    {{ if $pag.HasNext }}
+      <a class="pagination-action pagination-next" href="{{ $pag.Next.URL }}" rel="next" aria-label="Next page">
+        <span class="pagination-label">Next</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    {{ else }}
+      <span class="pagination-action pagination-next disabled" aria-disabled="true">
+        <span class="pagination-label">Next</span>
+        <span aria-hidden="true">&rarr;</span>
+      </span>
+    {{ end }}
+  </div>
+  <div class="pagination-summary">
+    <span>Page {{ $pag.PageNumber }} of {{ $pag.TotalPages }}</span>
+  </div>
+</nav>
+{{ end }}

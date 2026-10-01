@@ -3,6 +3,7 @@ title: "Enforcing Performance Budgets in CI/CD Pipelines"
 date: 2026-09-30
 author: "Damodar Team"
 description: "How to automate Core Web Vitals checks and bundle size limits using Lighthouse and GitHub Actions."
+categories: ["Engineering", "Frontend"]
 tags: ["frontend", "performance", "devops", "automation"]
 series: ["Modern Frontend"]
 ---

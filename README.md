@@ -22,6 +22,7 @@ A clean, fast, documentation-and-notes Hugo theme designed for engineers, resear
   - **Headings**: Clean, accessible permalink anchors (`#`) on hover and focus for `<h2>`–`<h6>`.
   - **Images**: Automatic `<picture>` element generation with Hugo Pipes WebP and AVIF conversions, responsive `srcset`, `loading="lazy"`, and `decoding="async"`.
   - **Links**: Smart external link detection appending `target="_blank"` and `rel="noopener noreferrer"` while preserving relative internal links.
+- 📄 **Universal Multi-Page Pagination**: Built-in pagination with windowed number navigation (`Prev`, `1`, `...`, `current`, `Next`), summary counts, and ARIA labels across the Home Page recent list, section archives, categories, tags, and series.
 - 🚀 **Instant Navigation & Performance**: W3C Speculation Rules API and mouseover prefetching for sub-millisecond page transitions.
 - 📐 **Conditional KaTeX & Mermaid.js**: Zero-bloat conditional asset loading when `math: true` or `mermaid: true` is defined in page front matter, with live theme re-rendering.
 - 💡 **Callouts & GitHub-Style Alerts**: Dedicated shortcodes and automated styling for GitHub markdown alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`, `[!DANGER]`).
@@ -49,8 +50,10 @@ themes/damodar/
 │   ├── _default/
 │   │   ├── archive.html       # Chronological timeline archive layout
 │   │   ├── baseof.html        # Base skeleton with Pagefind hooks, shortcuts & back-to-top
-│   │   ├── list.html          # Taxonomy & section archive listings
+│   │   ├── list.html          # Taxonomy & section archive listings with pagination
 │   │   └── single.html        # Article layout with meta tree, author bio, share & pager
+│   ├── term/
+│   │   └── term.html          # Taxonomy term page (tags, categories, series) with pagination
 │   ├── _markup/
 │   │   ├── render-codeblock.html # Code block hook with title, lang & copy button
 │   │   ├── render-heading.html   # Heading hook with permalink anchor links
@@ -65,6 +68,7 @@ themes/damodar/
 │   │   ├── head.html          # HTML head, styles, metadata & blocking theme init
 │   │   ├── math.html          # KaTeX auto-render script partial
 │   │   ├── mermaid.html       # Mermaid.js with live theme-switch re-render
+│   │   ├── pagination.html    # Accessible multi-page numbered pagination navigation
 │   │   ├── prefetch.html      # Speculation Rules & hover prefetching partial
 │   │   ├── schema.html        # JSON-LD structured data partial
 │   │   ├── search-modal.html  # Keyboard-accessible search modal dialog
@@ -127,6 +131,10 @@ title = "Damodar Notes"
 theme = "damodar"
 locale = "en"
 
+# Pagination settings (controls section, tag, category, and series page sizes)
+[pagination]
+  pagerSize = 10
+
 [outputs]
   home = ["HTML", "RSS", "JSON"] # "JSON" enables instant client-side search fallback
 
@@ -140,7 +148,7 @@ locale = "en"
   tagline = "Engineering notes, architecture, and guides."
   footerText = "Published with Hugo and Damodar theme."
   showRecent = true              # show recent posts list on the home page
-  recentCount = 5
+  recentCount = 5                # items per page for home page recent list (paginated)
   ogImage = "/images/og-default.png" # default social share card
   # Sidebar section headings (defaults: "ON THIS PAGE" for TOC, "NAVIGATION" for site sections)
   tocTitle = "ON THIS PAGE"

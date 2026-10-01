@@ -3,6 +3,7 @@ title: "Modern CSS Architecture: Custom Properties & Container Queries"
 date: 2026-09-22
 author: "Damodar Team"
 description: "How to structure maintainable, responsive style systems using native modern CSS features without heavy runtime dependencies."
+categories: ["Engineering", "Frontend"]
 tags: ["frontend", "css", "architecture", "web-standards"]
 series: ["Modern Frontend"]
 ---

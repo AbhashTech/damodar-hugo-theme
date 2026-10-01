@@ -3,6 +3,9 @@ locale = "en"
 title = "My Notes"
 theme = "damodar"
 
+[pagination]
+  pagerSize = 2
+
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 

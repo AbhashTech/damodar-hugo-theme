@@ -3,6 +3,7 @@ title: "Components & Shortcodes Showcase"
 date: 2026-09-28
 author: "Damodar Team"
 description: "Interactive demo of tabs, collapsible accordions, file trees, footnotes, and diagrams."
+categories: ["Notes", "Showcase"]
 tags: ["showcase", "components", "guide"]
 math: true
 mermaid: true

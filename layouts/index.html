@@ -1,15 +1,28 @@
 {{ define "main" }}
+{{ $showRecent := site.Params.showRecent | default true }}
+{{ $paginator := "" }}
+{{ if $showRecent }}
+  {{ $pages := where site.RegularPages "Section" "!=" "" }}
+  {{ with site.Params.recentSections }}
+    {{ $pages = where site.RegularPages "Section" "in" . }}
+  {{ end }}
+  {{ $pageSize := site.Params.recentCount | default site.Params.paginate | default 5 }}
+  {{ $paginator = .Paginate $pages $pageSize }}
+{{ end }}
 <div class="page home">
   <h1 class="home-title">{{ site.Title }}</h1>
-  {{ with site.Params.tagline }}<p class="lede">{{ . }}</p>{{ end }}
-  <div class="prose">{{ .Content }}</div>
-  {{ if site.Params.showRecent | default true }}
-    <h2 class="small-head">Recent</h2>
+  {{ if or (not $paginator) (eq $paginator.PageNumber 1) }}
+    {{ with site.Params.tagline }}<p class="lede">{{ . }}</p>{{ end }}
+    {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{ end }}
+  {{ if $showRecent }}
+    <h2 class="small-head">Recent {{ if and $paginator (gt $paginator.TotalPages 1) }}<span class="pagination-badge">Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>{{ end }}</h2>
     <ul class="post-list">
-      {{ range first (site.Params.recentCount | default 5) site.RegularPages }}
+      {{ range $paginator.Pages }}
         <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></li>
       {{ end }}
     </ul>
+    {{ partial "pagination.html" . }}
   {{ end }}
 </div>
 {{ end }}

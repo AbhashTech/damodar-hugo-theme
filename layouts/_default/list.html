@@ -1,19 +1,27 @@
 {{ define "main" }}
+{{ $hasPosts := gt (len .RegularPages) 0 }}
+{{ $paginator := "" }}
+{{ if $hasPosts }}
+  {{ $paginator = .Paginate .RegularPages }}
+{{ end }}
 <div class="page list">
   {{ partial "breadcrumbs.html" . }}
   <h1>{{ .Title }}</h1>
-  <div class="prose">{{ .Content }}</div>
-  {{ with .Sections }}
-    <h2 class="small-head">Subcategories</h2>
-    <ul class="post-list">
-      {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a><span class="count">{{ len .RegularPagesRecursive }} posts</span></li>{{ end }}
-    </ul>
+  {{ if or (not $paginator) (eq $paginator.PageNumber 1) }}
+    <div class="prose">{{ .Content }}</div>
+    {{ with .Sections }}
+      <h2 class="small-head">Subcategories</h2>
+      <ul class="post-list">
+        {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a><span class="count">{{ len .RegularPagesRecursive }} posts</span></li>{{ end }}
+      </ul>
+    {{ end }}
   {{ end }}
-  {{ with .RegularPages }}
-    <h2 class="small-head">Posts</h2>
+  {{ if $hasPosts }}
+    <h2 class="small-head">Posts {{ if gt $paginator.TotalPages 1 }}<span class="pagination-badge">Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>{{ end }}</h2>
     <ul class="post-list">
-      {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></li>{{ end }}
+      {{ range $paginator.Pages }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></li>{{ end }}
     </ul>
+    {{ partial "pagination.html" . }}
   {{ end }}
 </div>
 {{ end }}

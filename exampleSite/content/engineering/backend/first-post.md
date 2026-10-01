@@ -3,6 +3,7 @@ title: "A first long post"
 date: 2026-09-20
 author: "Kunal Gautam"
 description: "An architectural overview of building resilient backend services and distributed workflows."
+categories: ["Engineering", "Backend"]
 tags: ["engineering", "backend", "architecture"]
 ---
 

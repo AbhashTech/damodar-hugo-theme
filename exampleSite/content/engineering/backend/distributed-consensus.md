@@ -3,6 +3,7 @@ title: "Distributed Consensus: Raft vs. Paxos Under Network Partitions"
 date: 2026-09-26
 author: "Damodar Team"
 description: "A formal comparison of leader election, log replication, and safety guarantees in distributed state machines."
+categories: ["Engineering", "Backend"]
 tags: ["backend", "distributed-systems", "raft", "architecture"]
 series: ["Distributed Fundamentals"]
 math: true

@@ -3,6 +3,7 @@ title: "A short note"
 date: 2026-09-25
 author: "Thariq Shihipar"
 description: "A quick note exploring syntax highlighting, callouts, and code copy in Damodar."
+categories: ["Notes"]
 tags: ["notes", "quicktips", "python"]
 ---
 ## Overview
