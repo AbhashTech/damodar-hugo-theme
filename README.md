@@ -12,7 +12,7 @@ A clean, fast, documentation-and-notes Hugo theme designed for engineers, resear
 
 - 🔍 **Dual-Engine Search**: Keyboard-driven modal dialog (`⌘K` / `Ctrl+K` or `/`) with native [Pagefind](https://pagefind.app/) indexing (`data-pagefind-*` hooks) and automatic fallback to a zero-config client-side JSON search index.
 - 🌓 **Flicker-Free Dark/Light Mode**: Inline blocking detection prevents FOUC, synchronized with system color preferences (`prefers-color-scheme`) and persistent via `localStorage`. Live re-renders diagrams when switching themes.
-- 🌲 **Sticky Navigation & Dynamic TOC**: Contextual sidebar displaying "ON THIS PAGE" for articles and "NAVIGATION" for section browsing. The scroll-spy Table of Contents tracks reading progress up to 100% on long articles while automatically suppressing the progress bar on short notes that fit comfortably on screen.
+- 🌲 **Sticky Navigation & Brand Header**: Configurable sidebar housing the logo, site title, tagline, and intro bio with customizable layout options (`brandLayout = "below"` or `"beside"`). Contextual navigation displays "ON THIS PAGE" for articles and "NAVIGATION" for site sections, with smart reading progress tracking.
 - 🎨 **Architectural Patterned Footer**: Full-width footer featuring a subtle geometric dotted matrix pattern, glowing luminescent accent border, multi-column navigation, social/feed badges, and interactive keyboard shortcuts trigger.
 - ⌨️ **Keyboard Hotkeys & Navigation**: Global shortcuts modal (<kbd>?</kbd>), theme toggle (<kbd>T</kbd>), sequential article navigation (<kbd>J</kbd> / <kbd>K</kbd>), and home shortcut (<kbd>H</kbd>).
 - 🧩 **Interactive Component Shortcodes**: Accessible multi-language tabs (`{{< tabs >}}`), collapsible accordions (`{{< details >}}`), visual directory file trees (`{{< filetree >}}`), and admonitions (`{{< callout >}}`).
@@ -144,11 +144,15 @@ locale = "en"
   series = "series"
 
 [params]
+  # Brand layout in sidebar: "below" (default: text below logo) or "beside" (text beside logo)
+  brandLayout = "below"
   logo = "/logo.svg"             # static/logo.svg; omit to display site title text
   tagline = "Engineering notes, architecture, and guides."
+  sidebarBio = ""                # optional custom sidebar bio (defaults to home page content)
   footerText = "Published with Hugo and Damodar theme."
   showRecent = true              # show recent posts list on the home page
   recentCount = 5                # items per page for home page recent list (paginated)
+  recentTitle = "Recent"         # heading for home page feed
   ogImage = "/images/og-default.png" # default social share card
   # Sidebar section headings (defaults: "ON THIS PAGE" for TOC, "NAVIGATION" for site sections)
   tocTitle = "ON THIS PAGE"
