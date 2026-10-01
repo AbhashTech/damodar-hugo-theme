@@ -12,7 +12,8 @@ A clean, fast, documentation-and-notes Hugo theme designed for engineers, resear
 
 - 🔍 **Dual-Engine Search**: Keyboard-driven modal dialog (`⌘K` / `Ctrl+K` or `/`) with native [Pagefind](https://pagefind.app/) indexing (`data-pagefind-*` hooks) and automatic fallback to a zero-config client-side JSON search index.
 - 🌓 **Flicker-Free Dark/Light Mode**: Inline blocking detection prevents FOUC, synchronized with system color preferences (`prefers-color-scheme`) and persistent via `localStorage`. Live re-renders diagrams when switching themes.
-- 🌲 **Sticky Navigation & Dynamic TOC**: Independent scrolling desktop sidebar with collapsible section hierarchy, floating back-to-top button, and `IntersectionObserver` scroll-spy Table of Contents that tracks reading progress up to 100%.
+- 🌲 **Sticky Navigation & Dynamic TOC**: Contextual sidebar displaying "ON THIS PAGE" for articles and "NAVIGATION" for section browsing. The scroll-spy Table of Contents tracks reading progress up to 100% on long articles while automatically suppressing the progress bar on short notes that fit comfortably on screen.
+- 🎨 **Architectural Patterned Footer**: Full-width footer featuring a subtle geometric dotted matrix pattern, glowing luminescent accent border, multi-column navigation, social/feed badges, and interactive keyboard shortcuts trigger.
 - ⌨️ **Keyboard Hotkeys & Navigation**: Global shortcuts modal (<kbd>?</kbd>), theme toggle (<kbd>T</kbd>), sequential article navigation (<kbd>J</kbd> / <kbd>K</kbd>), and home shortcut (<kbd>H</kbd>).
 - 🧩 **Interactive Component Shortcodes**: Accessible multi-language tabs (`{{< tabs >}}`), collapsible accordions (`{{< details >}}`), visual directory file trees (`{{< filetree >}}`), and admonitions (`{{< callout >}}`).
 - 🖼️ **Image Lightbox & Footnote Popovers**: Zero-dependency click-to-zoom image lightbox with backdrop blur, and in-place hover/click footnote tooltips.
@@ -244,6 +245,8 @@ tags: ["distributed-systems", "architecture", "go"]
 series: ["Distributed Fundamentals"]
 math: true             # loads KaTeX styles and auto-render scripts
 mermaid: true          # loads Mermaid.js diagram engine
+toc: true              # set to false to disable table of contents in sidebar
+progress: true         # automatically suppressed on short notes; set to false to force-disable
 comments: true         # set to false to disable comments on this page
 searchhidden: false    # set to true to exclude from search indexing
 draft: false
