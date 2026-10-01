@@ -146,9 +146,10 @@ locale = "en"
   tocTitle = "ON THIS PAGE"
   navigationTitle = "NAVIGATION"
 
-  # Repository link for "Edit this page" action on posts
+  # Repository link for "Edit this page" action (hidden by default, set showEditPage = true to enable)
   repo = "https://github.com/yourusername/your-repo"
   repoBranch = "main"
+  showEditPage = false
 
   # Default author details
   [params.author]

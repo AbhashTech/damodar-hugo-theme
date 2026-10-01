@@ -23,9 +23,10 @@ theme = "damodar"
   # Sidebar section headings (defaults: "ON THIS PAGE" for TOC, "NAVIGATION" for site sections)
   tocTitle = "ON THIS PAGE"
   navigationTitle = "NAVIGATION"
-  # Repository link for "Edit this page" links on single posts
+  # Repository link for "Edit this page" action (hidden by default, set showEditPage = true to enable)
   repo = "https://github.com/username/my-site"
   repoBranch = "main"
+  showEditPage = false
 
   [params.author]
     name = "Author Name"

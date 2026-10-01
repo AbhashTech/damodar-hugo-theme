@@ -23,6 +23,7 @@ theme = "damodar"
   termsDescription = "Browse all topics and tags."
   repo = "https://github.com/kunalgautam/damodar"
   repoBranch = "master"
+  showEditPage = false
 
   [params.author]
     name = "Damodar Team"
