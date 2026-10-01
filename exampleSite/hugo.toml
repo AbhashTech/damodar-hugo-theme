@@ -3,6 +3,9 @@ languageCode = "en"
 title = "My Notes"
 theme = "damodar"
 
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
 [params]
   logo = "/logo.svg"          # file in static/ ; remove to show only the site title
   tagline = "Notes on building things."

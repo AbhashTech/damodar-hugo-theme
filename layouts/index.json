@@ -1,0 +1,15 @@
+[
+  {{- $pages := where site.RegularPages "Params.searchhidden" "ne" true -}}
+  {{- range $i, $page := $pages -}}
+    {{- if $i }},{{ end -}}
+    {
+      "title": {{ $page.Title | jsonify }},
+      "permalink": {{ $page.RelPermalink | jsonify }},
+      "summary": {{ $page.Summary | plainify | htmlUnescape | jsonify }},
+      "content": {{ $page.Plain | htmlUnescape | truncate 3000 | jsonify }},
+      "section": {{ $page.Section | humanize | jsonify }},
+      "tags": {{ ($page.Params.tags | default slice) | jsonify }},
+      "date": {{ $page.Date.Format "Jan 2, 2006" | jsonify }}
+    }
+  {{- end -}}
+]

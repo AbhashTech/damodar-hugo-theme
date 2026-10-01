@@ -1,0 +1,311 @@
+(function () {
+  var modal = document.getElementById('search-modal');
+  if (!modal) return;
+
+  var backdrop = document.getElementById('search-backdrop');
+  var input = document.getElementById('search-input');
+  var closeBtn = document.getElementById('search-close');
+  var resultsList = document.getElementById('search-results');
+  var emptyState = document.getElementById('search-empty');
+  var initialState = document.getElementById('search-initial');
+  var queryText = document.getElementById('search-query-text');
+  var triggerBtn = document.getElementById('search-trigger');
+
+  var indexData = null;
+  var isLoading = false;
+  var activeIndex = -1;
+  var previousActiveElement = null;
+
+  function loadIndex(callback) {
+    if (indexData) {
+      if (callback) callback(indexData);
+      return;
+    }
+    if (isLoading) return;
+    isLoading = true;
+    var url = modal.getAttribute('data-index') || '/index.json';
+    fetch(url)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        indexData = data;
+        isLoading = false;
+        if (callback) callback(indexData);
+      })
+      .catch(function (err) {
+        console.error('Failed to load search index', err);
+        isLoading = false;
+      });
+  }
+
+  function openSearch() {
+    previousActiveElement = document.activeElement;
+    modal.hidden = false;
+    document.body.classList.add('search-open');
+    loadIndex();
+    setTimeout(function () {
+      input.focus();
+      input.select();
+    }, 50);
+  }
+
+  function closeSearch() {
+    modal.hidden = true;
+    document.body.classList.remove('search-open');
+    if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
+      previousActiveElement.focus();
+    }
+  }
+
+  if (triggerBtn) {
+    triggerBtn.addEventListener('click', openSearch);
+    triggerBtn.addEventListener('mouseenter', function () { loadIndex(); }, { once: true });
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+  if (backdrop) backdrop.addEventListener('click', closeSearch);
+
+  // Global keyboard shortcuts
+  document.addEventListener('keydown', function (e) {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (modal.hidden) openSearch();
+      else closeSearch();
+      return;
+    }
+    if (e.key === '/' && modal.hidden) {
+      var tag = (document.activeElement && document.activeElement.tagName) || '';
+      var editable = document.activeElement && document.activeElement.isContentEditable;
+      if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT' && !editable) {
+        e.preventDefault();
+        openSearch();
+        return;
+      }
+    }
+    if (e.key === 'Escape' && !modal.hidden) {
+      e.preventDefault();
+      closeSearch();
+    }
+  });
+
+  function escapeHtml(str) {
+    return (str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function highlightMatches(text, tokens) {
+    var safeText = escapeHtml(text);
+    if (!tokens || tokens.length === 0) return safeText;
+    var regex = new RegExp('(' + tokens.map(function (t) {
+      return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }).join('|') + ')', 'gi');
+    return safeText.replace(regex, '<mark class="search-hl">$1</mark>');
+  }
+
+  function createSnippet(content, tokens) {
+    if (!content) return '';
+    var lower = content.toLowerCase();
+    var firstIdx = -1;
+    for (var i = 0; i < tokens.length; i++) {
+      var idx = lower.indexOf(tokens[i]);
+      if (idx !== -1 && (firstIdx === -1 || idx < firstIdx)) {
+        firstIdx = idx;
+      }
+    }
+    var start = Math.max(0, firstIdx - 60);
+    var end = Math.min(content.length, firstIdx + 120);
+    if (firstIdx === -1) {
+      start = 0;
+      end = Math.min(content.length, 140);
+    }
+    var snippet = content.slice(start, end);
+    if (start > 0) snippet = '...' + snippet;
+    if (end < content.length) snippet = snippet + '...';
+    return highlightMatches(snippet, tokens);
+  }
+
+  function executeSearch(query) {
+    var q = query.trim().toLowerCase();
+    if (!q) {
+      resultsList.innerHTML = '';
+      initialState.hidden = false;
+      emptyState.hidden = true;
+      activeIndex = -1;
+      return;
+    }
+
+    initialState.hidden = true;
+    var tokens = q.split(/\s+/).filter(Boolean);
+
+    loadIndex(function (pages) {
+      var matched = [];
+      for (var i = 0; i < pages.length; i++) {
+        var page = pages[i];
+        var title = (page.title || '').toLowerCase();
+        var content = (page.content || '').toLowerCase();
+        var summary = (page.summary || '').toLowerCase();
+        var section = (page.section || '').toLowerCase();
+        var tags = Array.isArray(page.tags) ? page.tags.join(' ').toLowerCase() : '';
+
+        var allMatch = true;
+        var score = 0;
+
+        for (var t = 0; t < tokens.length; t++) {
+          var token = tokens[t];
+          var inTitle = title.indexOf(token);
+          var inTags = tags.indexOf(token);
+          var inSection = section.indexOf(token);
+          var inContent = content.indexOf(token);
+          var inSummary = summary.indexOf(token);
+
+          if (inTitle === -1 && inTags === -1 && inSection === -1 && inContent === -1 && inSummary === -1) {
+            allMatch = false;
+            break;
+          }
+
+          if (inTitle !== -1) score += (inTitle === 0 ? 120 : 60);
+          if (inTags !== -1) score += 40;
+          if (inSection !== -1) score += 20;
+          if (inSummary !== -1) score += 15;
+          if (inContent !== -1) score += 8;
+        }
+
+        if (allMatch) {
+          matched.push({
+            page: page,
+            score: score
+          });
+        }
+      }
+
+      matched.sort(function (a, b) { return b.score - a.score; });
+      renderResults(matched.slice(0, 12), tokens, q);
+    });
+  }
+
+  function renderResults(results, tokens, rawQuery) {
+    resultsList.innerHTML = '';
+    if (results.length === 0) {
+      emptyState.hidden = false;
+      if (queryText) queryText.textContent = rawQuery;
+      activeIndex = -1;
+      return;
+    }
+
+    emptyState.hidden = true;
+    var frag = document.createDocumentFragment();
+
+    results.forEach(function (res, idx) {
+      var p = res.page;
+      var li = document.createElement('li');
+      li.className = 'search-item';
+      li.setAttribute('role', 'option');
+      li.setAttribute('id', 'search-opt-' + idx);
+      if (idx === 0) {
+        li.classList.add('selected');
+        li.setAttribute('aria-selected', 'true');
+      }
+
+      var a = document.createElement('a');
+      a.className = 'search-item-link';
+      a.href = p.permalink;
+
+      var header = document.createElement('div');
+      header.className = 'search-item-header';
+
+      var titleSpan = document.createElement('span');
+      titleSpan.className = 'search-item-title';
+      titleSpan.innerHTML = highlightMatches(p.title || 'Untitled', tokens);
+      header.appendChild(titleSpan);
+
+      if (p.section) {
+        var sectionSpan = document.createElement('span');
+        sectionSpan.className = 'search-item-section';
+        sectionSpan.textContent = p.section;
+        header.appendChild(sectionSpan);
+      }
+      a.appendChild(header);
+
+      var snippet = createSnippet(p.summary || p.content || '', tokens);
+      if (snippet) {
+        var snippetP = document.createElement('p');
+        snippetP.className = 'search-item-snippet';
+        snippetP.innerHTML = snippet;
+        a.appendChild(snippetP);
+      }
+
+      if (Array.isArray(p.tags) && p.tags.length > 0) {
+        var tagsDiv = document.createElement('div');
+        tagsDiv.className = 'search-item-tags';
+        p.tags.slice(0, 4).forEach(function (t) {
+          var tagSpan = document.createElement('span');
+          tagSpan.className = 'search-tag';
+          tagSpan.textContent = '#' + t;
+          tagsDiv.appendChild(tagSpan);
+        });
+        a.appendChild(tagsDiv);
+      }
+
+      li.appendChild(a);
+      frag.appendChild(li);
+    });
+
+    resultsList.appendChild(frag);
+    activeIndex = 0;
+  }
+
+  function updateSelection(index) {
+    var items = resultsList.querySelectorAll('.search-item');
+    if (items.length === 0) return;
+    items.forEach(function (item, i) {
+      if (i === index) {
+        item.classList.add('selected');
+        item.setAttribute('aria-selected', 'true');
+        item.scrollIntoView({ block: 'nearest' });
+      } else {
+        item.classList.remove('selected');
+        item.removeAttribute('aria-selected');
+      }
+    });
+    activeIndex = index;
+  }
+
+  input.addEventListener('input', function () {
+    executeSearch(input.value);
+  });
+
+  input.addEventListener('keydown', function (e) {
+    var items = resultsList.querySelectorAll('.search-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (items.length > 0) {
+        var next = (activeIndex + 1) % items.length;
+        updateSelection(next);
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (items.length > 0) {
+        var prev = (activeIndex - 1 + items.length) % items.length;
+        updateSelection(prev);
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (items.length > 0 && activeIndex >= 0 && activeIndex < items.length) {
+        var link = items[activeIndex].querySelector('a');
+        if (link) window.location.href = link.href;
+      }
+    }
+  });
+
+  resultsList.addEventListener('mousemove', function (e) {
+    var item = e.target.closest('.search-item');
+    if (!item) return;
+    var items = Array.prototype.slice.call(resultsList.querySelectorAll('.search-item'));
+    var idx = items.indexOf(item);
+    if (idx !== -1 && idx !== activeIndex) {
+      updateSelection(idx);
+    }
+  });
+})();

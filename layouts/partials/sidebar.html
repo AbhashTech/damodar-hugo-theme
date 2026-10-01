@@ -13,6 +13,14 @@
   </button>
 </div>
 
+<div class="side-search">
+  <button class="search-trigger" id="search-trigger" type="button" aria-label="Search site" title="Search (⌘K or /)">
+    <svg class="ic-search" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <span class="search-trigger-text">Search</span>
+    <kbd class="search-kbd">⌘K</kbd>
+  </button>
+</div>
+
 <nav class="side-mid" aria-label="Contents">
   <p class="side-heading">TREE</p>
   {{ if and .IsPage (not .IsHome) (ne .Params.toc false) (gt (len .Fragments.Headings) 0) }}
