@@ -1,0 +1,11 @@
+<div class="file-tree-card">
+  <div class="file-tree-header">
+    <span class="file-tree-dot dot-red"></span>
+    <span class="file-tree-dot dot-yellow"></span>
+    <span class="file-tree-dot dot-green"></span>
+    <span class="file-tree-title">{{ .Get "title" | default "File Structure" }}</span>
+  </div>
+  <div class="file-tree-body">
+    {{ .Inner | markdownify }}
+  </div>
+</div>

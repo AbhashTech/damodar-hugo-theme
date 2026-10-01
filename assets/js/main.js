@@ -537,5 +537,36 @@
     });
   }
   initShareButtons();
+
+  /* File tree shortcode icons */
+  function initFileTree() {
+    var trees = document.querySelectorAll('.file-tree-body');
+    trees.forEach(function (tree) {
+      if (tree.dataset.treeInit) return;
+      tree.dataset.treeInit = 'true';
+      var folderIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ft-icon ft-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>';
+      var fileIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ft-icon ft-file"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>';
+
+      tree.querySelectorAll('li').forEach(function (li) {
+        var hasSub = li.querySelector('ul');
+        var text = '';
+        for (var i = 0; i < li.childNodes.length; i++) {
+          var node = li.childNodes[i];
+          if (node.nodeType === 3) {
+            text += node.nodeValue;
+          } else if (node.nodeType === 1 && node.tagName !== 'UL') {
+            text += node.textContent;
+          }
+        }
+        text = text.trim();
+        var isFolder = hasSub || text.endsWith('/');
+        var iconSpan = document.createElement('span');
+        iconSpan.className = 'ft-icon-wrap';
+        iconSpan.innerHTML = isFolder ? folderIcon : fileIcon;
+        li.insertBefore(iconSpan, li.firstChild);
+      });
+    });
+  }
+  initFileTree();
 })();
 
