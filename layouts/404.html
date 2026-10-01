@@ -1,0 +1,11 @@
+{{ define "main" }}
+<div class="page not-found">
+  <div class="not-found-code">404</div>
+  <h1>Page Not Found</h1>
+  <p class="lede">The page you were looking for doesn't exist, has been removed, or moved elsewhere.</p>
+  <div class="not-found-actions">
+    <a href="{{ "/" | relURL }}" class="btn-primary">&larr; Return to Home</a>
+    <button type="button" class="btn-secondary" onclick="document.getElementById('search-trigger') && document.getElementById('search-trigger').click()">Search the site</button>
+  </div>
+</div>
+{{ end }}

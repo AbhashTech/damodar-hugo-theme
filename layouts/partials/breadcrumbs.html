@@ -1,0 +1,29 @@
+{{ if not .IsHome }}
+<nav class="breadcrumbs" aria-label="Breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="{{ "/" | relURL }}" itemprop="item"><span itemprop="name">Home</span></a>
+      <meta itemprop="position" content="1" />
+    </li>
+    {{ $pos := 1 }}
+    {{ range .Ancestors.Reverse }}
+      {{ if not .IsHome }}
+        {{ $pos = add $pos 1 }}
+        <li class="crumb-sep" aria-hidden="true">/</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="{{ .RelPermalink }}" itemprop="item"><span itemprop="name">{{ .LinkTitle }}</span></a>
+          <meta itemprop="position" content="{{ $pos }}" />
+        </li>
+      {{ end }}
+    {{ end }}
+    {{ if .IsPage }}
+      {{ $pos = add $pos 1 }}
+      <li class="crumb-sep" aria-hidden="true">/</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="crumb-current" aria-current="page">
+        <span itemprop="name">{{ .LinkTitle }}</span>
+        <meta itemprop="position" content="{{ $pos }}" />
+      </li>
+    {{ end }}
+  </ol>
+</nav>
+{{ end }}

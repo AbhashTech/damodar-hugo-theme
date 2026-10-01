@@ -1,5 +1,6 @@
 {{ define "main" }}
 <article class="page post">
+  {{ partial "breadcrumbs.html" . }}
   <header>
     <h1>{{ .Title }}</h1>
     <p class="meta">
@@ -16,5 +17,26 @@
     {{ end }}
   </header>
   <div class="prose" id="post-body">{{ .Content }}</div>
+
+  {{ $prev := .PrevInSection }}
+  {{ $next := .NextInSection }}
+  {{ if or $prev $next }}
+    <nav class="post-pager" aria-label="Post navigation">
+      {{ with $prev }}
+        <a class="pager-card pager-prev" href="{{ .RelPermalink }}" rel="prev">
+          <span class="pager-hint">&larr; Previous</span>
+          <span class="pager-title">{{ .Title }}</span>
+        </a>
+      {{ else }}
+        <div class="pager-placeholder"></div>
+      {{ end }}
+      {{ with $next }}
+        <a class="pager-card pager-next" href="{{ .RelPermalink }}" rel="next">
+          <span class="pager-hint">Next &rarr;</span>
+          <span class="pager-title">{{ .Title }}</span>
+        </a>
+      {{ end }}
+    </nav>
+  {{ end }}
 </article>
 {{ end }}
