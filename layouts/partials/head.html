@@ -38,7 +38,9 @@
     } catch (e) {}
   })();
 </script>
-{{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+{{- $syntax := resources.Get "css/syntax.css" -}}
+{{- $main := resources.Get "css/main.css" -}}
+{{- $css := slice $syntax $main | resources.Concat "css/bundle.css" | minify | fingerprint -}}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 {{- with resources.Get "css/custom.css" -}}
   {{- $custom := . | minify | fingerprint -}}

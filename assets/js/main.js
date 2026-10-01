@@ -204,10 +204,11 @@
     });
 
     // Fallback: inject header for any pre/highlight blocks not handled by render-codeblock hook
-    var codeBlocks = document.querySelectorAll('.prose .highlight, .prose pre');
+    var codeBlocks = document.querySelectorAll('.prose .highlight, .prose pre:not(.mermaid)');
     codeBlocks.forEach(function (block) {
       if (block.closest('.code-block-wrapper')) return;
       if (block.tagName === 'PRE' && block.closest('.highlight')) return;
+      if (block.classList.contains('mermaid') || block.closest('.mermaid')) return;
       if (block.querySelector('.code-header')) return;
 
       var code = block.querySelector('code');
