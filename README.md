@@ -529,38 +529,146 @@ jobs:
 
 ## Customization & Overrides
 
-### Overriding Layouts & Partials
-Hugo gives priority to your project root layouts. To customize any partial without modifying the theme:
-1. Recreate the path in your site repository:
-   `layouts/partials/<partial-name>.html`
-2. Hugo will automatically use your file instead of `themes/damodar/layouts/partials/<partial-name>.html`.
+Damodar is built following standard Hugo conventions, allowing you to customize and override styles, layouts, templates, and content without ever modifying the underlying theme submodule or module.
 
-### Customizing Colors & Styles
-All theme styles are driven by clean CSS variables. To change colors or fonts, create an `assets/css/custom.css` or define CSS variables in your site:
+---
+
+### 1. Customizing Styles & CSS Variables
+
+All visual styling is controlled by CSS custom properties (variables) defined at `:root` in `assets/css/main.css`.
+
+#### Method A: Automatic Asset Injection (`assets/css/custom.css`)
+
+Create a file named `assets/css/custom.css` in your site root directory. Hugo will automatically discover, bundle, minify, fingerprint, and load it after the theme's core styles:
 
 ```css
+/* <your-site-root>/assets/css/custom.css */
+
+/* Customize light mode tokens */
 :root {
-  --bg: #faf8f5;           /* Light mode background */
-  --panel: #f3f0e8;        /* Sidebar & card panel */
-  --fg: #1f1f1d;           /* Text color */
-  --muted: #5e5d59;        /* Muted captions */
-  --faint: #91908a;        /* Borders and timestamps */
-  --rule: #dedbd2;         /* Divider lines */
-  --accent: #c24d2c;       /* Brand accent */
-  --sans: "Newsreader", serif;
-  --mono: "JetBrains Mono", monospace;
+  --accent: #2563eb;                   /* Change brand accent to blue */
+  --side: 320px;                       /* Adjust desktop sidebar width */
+  --sans: "Geist", "Inter", sans-serif;/* Custom sans font */
+  --mono: "Geist Mono", monospace;     /* Custom monospace font */
 }
 
+/* Customize dark mode tokens */
 :root[data-theme="dark"] {
-  --bg: #121210;
-  --panel: #181816;
-  --fg: #ecebe4;
-  --muted: #9e9d96;
-  --faint: #605f59;
-  --rule: #2a2a26;
-  --accent: #e06c4a;
+  --bg: #0b0d13;
+  --panel: #131722;
+  --accent: #60a5fa;
+  --rule: #1e2433;
 }
 ```
+
+#### Complete CSS Variables Reference
+
+| Variable | Default (Light) | Default (Dark) | Description |
+|---|---|---|---|
+| `--bg` | `#f3f1ea` | `#141412` | Main page background |
+| `--panel` | `#eceae2` | `#1c1c19` | Sidebar, cards, code block header background |
+| `--fg` | `#1b1b19` | `#ecebe4` | Primary body typography color |
+| `--muted` | `#5d5b55` | `#a7a59b` | Secondary text, descriptions, inactive links |
+| `--faint` | `#a19e94` | `#6a685f` | Micro copy, timestamps, borders, tree elbows |
+| `--rule` | `#d8d5ca` | `#2d2d29` | Hairline dividers, card outlines |
+| `--link` | `#1b1b19` | `#ecebe4` | Anchor link color |
+| `--accent` | `#c24d2c` | `#e2704f` | Active indicator, primary buttons, highlights |
+| `--side` | `300px` | `300px` | Fixed desktop sidebar width |
+| `--sans` | `"Inter", system-ui...` | `"Inter", system-ui...` | Primary body font family |
+| `--mono` | `"ui-monospace", "JetBrains Mono"...` | `"ui-monospace", "JetBrains Mono"...` | Code blocks, metadata, tags, and shortcuts font |
+
+#### Method B: Configuration Parameter (`params.customCSS`)
+
+You can also specify one or more custom stylesheet paths in `hugo.toml`:
+
+```toml
+[params]
+  customCSS = [
+    "css/brand.css",
+    "https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap"
+  ]
+```
+
+---
+
+### 2. Injecting Custom HTML, Fonts & Scripts (`head-custom.html`)
+
+To add web fonts, custom scripts, or third-party verification tags to the `<head>` of every page:
+
+1. Create `layouts/partials/head-custom.html` in your site's repository root.
+2. Add your custom HTML:
+
+```html
+<!-- <your-site-root>/layouts/partials/head-custom.html -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+```
+
+---
+
+### 3. Overriding Layouts & Templates
+
+Hugo follows a strict template lookup hierarchy: **any layout file placed in your site's root `layouts/` directory will automatically take precedence over the theme's version**.
+
+| To Customize | Copy from Theme | Create in Your Site |
+|---|---|---|
+| Site Footer | `themes/damodar/layouts/partials/footer.html` | `layouts/partials/footer.html` |
+| Sidebar Navigation | `themes/damodar/layouts/partials/sidebar.html` | `layouts/partials/sidebar.html` |
+| Article Post Layout | `themes/damodar/layouts/_default/single.html` | `layouts/_default/single.html` |
+| List / Section Archives | `themes/damodar/layouts/_default/list.html` | `layouts/_default/list.html` |
+| Timeline Archive | `themes/damodar/layouts/_default/archive.html` | `layouts/_default/archive.html` |
+| Author Bio Card | `themes/damodar/layouts/partials/author-bio.html` | `layouts/partials/author-bio.html` |
+| Code Block Hook | `themes/damodar/layouts/_markup/render-codeblock.html` | `layouts/_markup/render-codeblock.html` |
+
+---
+
+### 4. Customizing Content & Front Matter
+
+#### Custom Archetypes
+
+Create `archetypes/posts.md` in your site root to standardize metadata whenever you run `hugo new content posts/my-post.md`:
+
+```yaml
+---
+title: "{{ replace .File.ContentBaseName "-" " " | title }}"
+date: {{ .Date }}
+draft: false
+description: ""
+author: "Your Name"
+tags: []
+series: []
+toc: true
+progress: true
+math: false
+mermaid: false
+comments: true
+---
+```
+
+#### Page-Level Front Matter Overrides
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `toc` | boolean | `true` | Set to `false` to hide Table of Contents in sidebar |
+| `progress` | boolean | `true` | Automatically suppressed on short notes; set to `false` to force disable |
+| `math` | boolean | `false` | Load KaTeX styles and auto-render engine on this page |
+| `mermaid` | boolean | `false` | Load Mermaid.js diagram engine with live theme sync |
+| `comments` | boolean | `true` | Set to `false` to disable Giscus/Utterances on this page |
+| `searchhidden`| boolean | `false` | Set to `true` to exclude this page from Pagefind and JSON search |
+
+---
+
+### 5. Overriding Syntax Highlighting Themes
+
+The theme uses Hugo Chroma with CSS classes enabled (`markup.highlight.noClasses = false`). Dual light/dark themes are defined in `assets/css/syntax.css`.
+
+To substitute your own Chroma themes:
+1. Generate styles with the Hugo CLI:
+   ```bash
+   hugo gen chromastyles --style=github > assets/css/syntax.css
+   ```
+2. Wrap light mode styles in `:root` and dark mode styles in `:root[data-theme="dark"]`.
 
 ---
 

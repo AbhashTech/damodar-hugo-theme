@@ -40,9 +40,22 @@
 </script>
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- with resources.Get "css/custom.css" -}}
+  {{- $custom := . | minify | fingerprint -}}
+  <link rel="stylesheet" href="{{ $custom.RelPermalink }}" integrity="{{ $custom.Data.Integrity }}">
+{{- end -}}
+{{- range site.Params.customCSS -}}
+  {{- with resources.Get . -}}
+    {{- $c := . | minify | fingerprint -}}
+    <link rel="stylesheet" href="{{ $c.RelPermalink }}" integrity="{{ $c.Data.Integrity }}">
+  {{- else -}}
+    <link rel="stylesheet" href="{{ . | relURL }}">
+  {{- end -}}
+{{- end -}}
 {{- if or .Params.math .Params.katex site.Params.math -}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
 {{- end -}}
 {{ with site.Params.logo }}<link rel="icon" href="{{ . | relURL }}">{{ end }}
 {{ partial "analytics.html" . }}
 {{ partial "prefetch.html" . }}
+{{ partial "head-custom.html" . }}
