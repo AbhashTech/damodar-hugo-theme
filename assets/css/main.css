@@ -182,6 +182,18 @@ h1{font:600 2.1rem/1.2 var(--sans);letter-spacing:-.02em;margin:0 0 .6rem}
 .tab-panel>:last-child{margin-bottom:0}
 .tab-panel .code-block-wrapper,.tab-panel .highlight{margin:.4rem 0}
 
+/* ---- details / accordion component ---- */
+.details-collapse{margin:1.5rem 0;border:1px solid var(--rule);border-radius:8px;background:var(--panel);overflow:hidden;transition:border-color .15s ease}
+.details-collapse[open]{border-color:var(--faint)}
+.details-summary{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;font:600 14px/1.4 var(--sans);color:var(--fg);cursor:pointer;user-select:none;list-style:none;background:var(--panel);transition:background .15s ease}
+.details-summary::-webkit-details-marker{display:none}
+.details-summary:hover{background:var(--bg)}
+.details-chevron{display:inline-flex;align-items:center;color:var(--muted);transition:transform .2s ease}
+.details-collapse[open] .details-chevron{transform:rotate(180deg)}
+.details-content{padding:.9rem 1.15rem 1.1rem;background:var(--bg);border-top:1px solid var(--rule);font-size:15px;line-height:1.6}
+.details-content>:first-child{margin-top:0}
+.details-content>:last-child{margin-bottom:0}
+
 /* ---- series & related content ---- */
 .series-box{margin:1.8rem 0;padding:1rem 1.25rem;background:var(--panel);border:1px solid var(--rule);border-radius:8px}
 .series-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;font:13px/1.4 var(--mono)}

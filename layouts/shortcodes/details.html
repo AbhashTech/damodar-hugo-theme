@@ -1,0 +1,13 @@
+{{- $title := .Get "title" | default (.Get 0) | default "Details" -}}
+{{- $open := .Get "open" | default false -}}
+<details class="details-collapse"{{ if $open }} open{{ end }}>
+  <summary class="details-summary">
+    <span class="details-title">{{ $title }}</span>
+    <span class="details-chevron" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </span>
+  </summary>
+  <div class="details-content">
+    {{ .Inner | markdownify }}
+  </div>
+</details>
