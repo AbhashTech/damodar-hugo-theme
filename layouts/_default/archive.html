@@ -1,0 +1,39 @@
+{{ define "main" }}
+<div class="page archive-page" data-pagefind-body>
+  {{ partial "breadcrumbs.html" . }}
+  <header class="page-head">
+    <h1 class="page-title" data-pagefind-meta="title">{{ .Title | default "Archive" }}</h1>
+    {{ with or .Description site.Params.archiveDescription }}
+      <p class="post-desc">{{ . }}</p>
+    {{ end }}
+    <div class="archive-stats">
+      <span class="archive-stat-item"><strong>{{ len site.RegularPages }}</strong> total articles</span>
+    </div>
+  </header>
+
+  <div class="archive-timeline">
+    {{- range site.RegularPages.GroupByDate "2006" -}}
+      <div class="archive-year-group">
+        <h2 class="archive-year">{{ .Key }} <span class="archive-year-count">({{ len .Pages }})</span></h2>
+        <ul class="archive-list">
+          {{ range .Pages }}
+            <li class="archive-item">
+              <time datetime="{{ .Date.Format "2006-01-02" }}" class="archive-date">{{ .Date.Format "Jan 02" }}</time>
+              <div class="archive-info">
+                <a href="{{ .RelPermalink }}" class="archive-link">{{ .Title }}</a>
+                {{ with .Params.tags }}
+                  <span class="archive-tags">
+                    {{ range first 2 . }}
+                      <span class="tag-badge">#{{ . }}</span>
+                    {{ end }}
+                  </span>
+                {{ end }}
+              </div>
+            </li>
+          {{ end }}
+        </ul>
+      </div>
+    {{- end -}}
+  </div>
+</div>
+{{ end }}

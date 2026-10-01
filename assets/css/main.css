@@ -125,6 +125,20 @@ h1{font:600 2.1rem/1.2 var(--sans);letter-spacing:-.02em;margin:0 0 .6rem}
 .back-link{font:12px var(--mono);color:var(--muted);text-decoration:none}
 .back-link:hover{color:var(--accent);text-decoration:underline}
 
+/* ---- archive & timeline layout ---- */
+.archive-stats{font:13px var(--mono);color:var(--faint);margin-bottom:2rem}
+.archive-year-group{margin-bottom:2.5rem}
+.archive-year{font:700 1.5rem/1.2 var(--mono);color:var(--fg);margin:0 0 1rem;letter-spacing:-.02em;padding-bottom:.4rem;border-bottom:1px solid var(--rule)}
+.archive-year-count{font-size:.8em;font-weight:400;color:var(--faint)}
+.archive-list{list-style:none;margin:0;padding:0}
+.archive-item{display:flex;align-items:baseline;gap:1.5rem;padding:.65rem 0;border-bottom:1px solid rgba(0,0,0,.04)}
+:root[data-theme="dark"] .archive-item{border-bottom-color:rgba(255,255,255,.04)}
+.archive-date{font:13px var(--mono);color:var(--faint);white-space:nowrap;min-width:60px}
+.archive-info{display:flex;align-items:center;justify-content:space-between;flex:1;gap:1rem;flex-wrap:wrap}
+.archive-link{font:600 15px/1.4 var(--sans);color:var(--fg);text-decoration:none}
+.archive-link:hover{color:var(--accent);text-decoration:underline}
+.archive-tags{display:flex;gap:.35rem}
+
 .prose h1,.prose h2,.prose h3,.prose h4,.prose h5,.prose h6{scroll-margin-top:2rem}
 .prose h2{font:600 1.35rem/1.3 var(--mono);margin:3rem 0 1rem}
 .prose h3{font:600 1.1rem/1.3 var(--mono);margin:2.2rem 0 .8rem}
