@@ -19,10 +19,18 @@
         </div>
       {{ end }}
 
-      {{ with .Date }}
+      {{ $pubDate := or .PublishDate .Date }}
+      {{ with $pubDate }}
         <div class="meta-col">
           <span class="meta-label">PUBLISHED</span>
           <span class="meta-val"><span class="tree-elbow" aria-hidden="true">&#x2514;</span> <time datetime="{{ .Format "2006-01-02" }}" data-pagefind-meta="date">{{ .Format "Jan 02, 2006" }}</time></span>
+        </div>
+      {{ end }}
+
+      {{ if and .Lastmod (or (not $pubDate) (ne (.Lastmod.Format "2006-01-02") ($pubDate.Format "2006-01-02"))) }}
+        <div class="meta-col">
+          <span class="meta-label">UPDATED</span>
+          <span class="meta-val"><span class="tree-elbow" aria-hidden="true">&#x2514;</span> <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "Jan 02, 2006" }}</time></span>
         </div>
       {{ end }}
 
@@ -30,6 +38,13 @@
         <div class="meta-col">
           <span class="meta-label">READING TIME</span>
           <span class="meta-val"><span class="tree-elbow" aria-hidden="true">&#x2514;</span> {{ .ReadingTime }} min</span>
+        </div>
+      {{ end }}
+
+      {{ if .WordCount }}
+        <div class="meta-col">
+          <span class="meta-label">WORDS</span>
+          <span class="meta-val"><span class="tree-elbow" aria-hidden="true">&#x2514;</span> {{ .WordCount }} words</span>
         </div>
       {{ end }}
 
