@@ -381,5 +381,86 @@
     });
   }
   initImageZoom();
+
+  /* Footnote Popovers */
+  function initFootnotes() {
+    var refs = document.querySelectorAll('.prose .footnote-ref');
+    if (refs.length === 0) return;
+
+    var popover = document.createElement('div');
+    popover.className = 'footnote-popover';
+    popover.setAttribute('role', 'tooltip');
+    document.body.appendChild(popover);
+
+    var activeRef = null;
+
+    function hidePopover() {
+      popover.classList.remove('visible');
+      activeRef = null;
+    }
+
+    document.addEventListener('click', function (e) {
+      if (!popover.contains(e.target) && (!activeRef || !activeRef.contains(e.target))) {
+        hidePopover();
+      }
+    });
+
+    window.addEventListener('scroll', hidePopover, { passive: true });
+    window.addEventListener('resize', hidePopover);
+
+    refs.forEach(function (ref) {
+      var targetId = ref.getAttribute('href');
+      if (!targetId || targetId.charAt(0) !== '#') return;
+      var fnLi = document.getElementById(targetId.slice(1));
+      if (!fnLi) return;
+
+      var clone = fnLi.cloneNode(true);
+      var backref = clone.querySelector('.footnote-backref');
+      if (backref) backref.remove();
+      var contentHtml = clone.innerHTML.trim();
+
+      function show(e) {
+        if (activeRef === ref && popover.classList.contains('visible')) {
+          hidePopover();
+          return;
+        }
+        activeRef = ref;
+        popover.innerHTML = contentHtml;
+        popover.classList.add('visible');
+
+        var rect = ref.getBoundingClientRect();
+        var popRect = popover.getBoundingClientRect();
+
+        var top = rect.top - popRect.height - 8;
+        var left = rect.left + (rect.width / 2) - (popRect.width / 2);
+
+        if (top < 10) {
+          top = rect.bottom + 8;
+        }
+        if (left < 10) left = 10;
+        if (left + popRect.width > window.innerWidth - 10) {
+          left = window.innerWidth - popRect.width - 10;
+        }
+
+        popover.style.top = (top + window.scrollY) + 'px';
+        popover.style.left = (left + window.scrollX) + 'px';
+      }
+
+      ref.addEventListener('click', function (e) {
+        e.preventDefault();
+        show(e);
+      });
+
+      ref.addEventListener('mouseenter', show);
+      ref.addEventListener('mouseleave', function () {
+        setTimeout(function () {
+          if (!popover.matches(':hover')) hidePopover();
+        }, 200);
+      });
+    });
+
+    popover.addEventListener('mouseleave', hidePopover);
+  }
+  initFootnotes();
 })();
 
