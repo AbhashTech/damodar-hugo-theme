@@ -119,25 +119,37 @@
     </section>
   {{ end }}
 
-  {{ $prev := .PrevInSection }}
-  {{ $next := .NextInSection }}
-  {{ if or $prev $next }}
-    <nav class="post-pager" aria-label="Post navigation" data-pagefind-ignore>
-      {{ with $prev }}
-        <a class="pager-card pager-prev" href="{{ .RelPermalink }}" rel="prev">
-          <span class="pager-hint">&larr; Previous</span>
-          <span class="pager-title">{{ .Title }}</span>
-        </a>
-      {{ else }}
-        <div class="pager-placeholder"></div>
-      {{ end }}
-      {{ with $next }}
-        <a class="pager-card pager-next" href="{{ .RelPermalink }}" rel="next">
-          <span class="pager-hint">Next &rarr;</span>
-          <span class="pager-title">{{ .Title }}</span>
-        </a>
-      {{ end }}
-    </nav>
+  {{ $showNav := false }}
+  {{ if isset $.Params "showpostnav" }}
+    {{ $showNav = $.Params.showpostnav }}
+  {{ else if isset $.Params "showpager" }}
+    {{ $showNav = $.Params.showpager }}
+  {{ else if isset site.Params "showpostnav" }}
+    {{ $showNav = site.Params.showPostNav }}
+  {{ else if isset site.Params "showpager" }}
+    {{ $showNav = site.Params.showPager }}
+  {{ end }}
+  {{ if $showNav }}
+    {{ $prev := .PrevInSection }}
+    {{ $next := .NextInSection }}
+    {{ if or $prev $next }}
+      <nav class="post-pager" aria-label="Post navigation" data-pagefind-ignore>
+        {{ with $prev }}
+          <a class="pager-card pager-prev" href="{{ .RelPermalink }}" rel="prev">
+            <span class="pager-hint">&larr; Previous</span>
+            <span class="pager-title">{{ .Title }}</span>
+          </a>
+        {{ else }}
+          <div class="pager-placeholder"></div>
+        {{ end }}
+        {{ with $next }}
+          <a class="pager-card pager-next" href="{{ .RelPermalink }}" rel="next">
+            <span class="pager-hint">Next &rarr;</span>
+            <span class="pager-title">{{ .Title }}</span>
+          </a>
+        {{ end }}
+      </nav>
+    {{ end }}
   {{ end }}
 
   {{ partial "comments.html" . }}

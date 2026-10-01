@@ -151,6 +151,9 @@ locale = "en"
   repoBranch = "main"
   showEditPage = false
 
+  # Article previous/next navigation pager (hidden by default, set showPostNav = true to enable)
+  showPostNav = false
+
   # Default author details
   [params.author]
     name = "Alex Engineer"
@@ -656,6 +659,8 @@ comments: true
 | `math` | boolean | `false` | Load KaTeX styles and auto-render engine on this page |
 | `mermaid` | boolean | `false` | Load Mermaid.js diagram engine with live theme sync |
 | `comments` | boolean | `true` | Set to `false` to disable Giscus/Utterances on this page |
+| `showeditpage`| boolean | `false` | Enable or disable the "Edit this page" action on this specific post |
+| `showpostnav`| boolean | `false` | Enable or disable the previous/next article pager on this specific post |
 | `searchhidden`| boolean | `false` | Set to `true` to exclude this page from Pagefind and JSON search |
 
 ---

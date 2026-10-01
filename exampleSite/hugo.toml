@@ -24,6 +24,7 @@ theme = "damodar"
   repo = "https://github.com/kunalgautam/damodar"
   repoBranch = "master"
   showEditPage = false
+  showPostNav = false
 
   [params.author]
     name = "Damodar Team"

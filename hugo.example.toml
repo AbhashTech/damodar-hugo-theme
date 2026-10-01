@@ -28,6 +28,9 @@ theme = "damodar"
   repoBranch = "main"
   showEditPage = false
 
+  # Article previous/next navigation pager (hidden by default, set showPostNav = true to enable)
+  showPostNav = false
+
   [params.author]
     name = "Author Name"
     bio = "Engineer, writer, and open-source enthusiast."
