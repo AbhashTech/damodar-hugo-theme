@@ -169,8 +169,42 @@
 
   /* Code copy button and language badge */
   function initCodeCopy() {
+    // Delegated click handler for code copy buttons (supports render hooks & dynamic blocks)
+    document.addEventListener('click', function (e) {
+      var copyBtn = e.target.closest('.code-copy');
+      if (!copyBtn) return;
+
+      var wrapper = copyBtn.closest('.code-block-wrapper') || copyBtn.closest('.highlight') || copyBtn.closest('pre');
+      if (!wrapper) return;
+
+      var text = '';
+      var codeTd = wrapper.querySelector('td.lntd:last-child code');
+      var code = wrapper.querySelector('pre code') || wrapper.querySelector('code');
+      if (codeTd) {
+        text = codeTd.innerText || codeTd.textContent;
+      } else if (code) {
+        text = code.innerText || code.textContent;
+      } else {
+        var pre = wrapper.querySelector('pre') || wrapper;
+        text = pre.innerText || pre.textContent;
+      }
+
+      if (!text) return;
+      navigator.clipboard.writeText(text.replace(/\n$/, '')).then(function () {
+        copyBtn.classList.add('copied');
+        var textSpan = copyBtn.querySelector('.copy-text');
+        if (textSpan) textSpan.textContent = 'Copied!';
+        setTimeout(function () {
+          copyBtn.classList.remove('copied');
+          if (textSpan) textSpan.textContent = 'Copy';
+        }, 2000);
+      }).catch(function () {});
+    });
+
+    // Fallback: inject header for any pre/highlight blocks not handled by render-codeblock hook
     var codeBlocks = document.querySelectorAll('.prose .highlight, .prose pre');
     codeBlocks.forEach(function (block) {
+      if (block.closest('.code-block-wrapper')) return;
       if (block.tagName === 'PRE' && block.closest('.highlight')) return;
       if (block.querySelector('.code-header')) return;
 
@@ -184,37 +218,19 @@
       var header = document.createElement('div');
       header.className = 'code-header';
 
+      var meta = document.createElement('div');
+      meta.className = 'code-meta';
       var langEl = document.createElement('span');
       langEl.className = 'code-lang';
       langEl.textContent = lang || 'code';
-      header.appendChild(langEl);
+      meta.appendChild(langEl);
+      header.appendChild(meta);
 
       var copyBtn = document.createElement('button');
       copyBtn.type = 'button';
       copyBtn.className = 'code-copy';
       copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
       copyBtn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span class="copy-text">Copy</span>';
-
-      copyBtn.addEventListener('click', function () {
-        var text = '';
-        var codeTd = block.querySelector('td.lntd:last-child code');
-        if (codeTd) {
-          text = codeTd.innerText || codeTd.textContent;
-        } else if (code) {
-          text = code.innerText || code.textContent;
-        } else {
-          text = block.innerText || block.textContent;
-        }
-        navigator.clipboard.writeText(text.replace(/\n$/, '')).then(function () {
-          copyBtn.classList.add('copied');
-          var textSpan = copyBtn.querySelector('.copy-text');
-          if (textSpan) textSpan.textContent = 'Copied!';
-          setTimeout(function () {
-            copyBtn.classList.remove('copied');
-            if (textSpan) textSpan.textContent = 'Copy';
-          }, 2000);
-        }).catch(function () {});
-      });
 
       header.appendChild(copyBtn);
       block.insertBefore(header, block.firstChild);
