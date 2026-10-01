@@ -1,7 +1,7 @@
 baseURL = "https://example.org/"
 languageCode = "en"
 title = "My Notes"
-theme = "treeline"
+theme = "damodar"
 
 [params]
   logo = "/logo.svg"          # file in static/ ; remove to show only the site title
@@ -13,6 +13,12 @@ theme = "treeline"
   startLevel = 2
   endLevel = 3
   ordered = false
+
+[markup.highlight]
+  noClasses = false
+  guessSyntax = true
+  lineNos = false
+  tabWidth = 2
 
 # Links shown at the bottom of the sidebar
 [[menus.main]]

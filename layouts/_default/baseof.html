@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ site.Language.LanguageCode | default "en" }}">
+<html lang="{{ site.Language.Locale | default site.Language.LanguageCode | default "en" }}">
 <head>{{ partial "head.html" . }}</head>
 <body id="top" class="{{ if .IsHome }}is-home{{ else if .IsPage }}is-post{{ else }}is-list{{ end }}">
   <a class="skip" href="#content">Skip to content</a>
