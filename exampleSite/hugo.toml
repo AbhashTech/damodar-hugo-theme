@@ -40,7 +40,7 @@ theme = "damodar"
   lineNos = false
   tabWidth = 2
 
-# Links shown at the bottom of the sidebar
+# Links shown in the full-width footer
 [[menus.main]]
   name = "Home"
   url = "/"

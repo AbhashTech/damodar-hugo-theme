@@ -203,7 +203,7 @@ locale = "en"
   lineNos = false
   tabWidth = 2
 
-# Navigation links displayed at the bottom of the sidebar and in the footer
+# Navigation links displayed in the full-width footer
 [[menus.main]]
   name = "Home"
   url = "/"

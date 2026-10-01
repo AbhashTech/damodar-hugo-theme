@@ -487,6 +487,13 @@
     }
 
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    var triggerBtns = document.querySelectorAll('.shortcuts-trigger');
+    triggerBtns.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+      });
+    });
     if (modal) {
       modal.addEventListener('click', function (e) {
         if (e.target === modal) closeModal();

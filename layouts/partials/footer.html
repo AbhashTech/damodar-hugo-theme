@@ -6,28 +6,64 @@
           {{ with site.Params.logo }}<img src="{{ . | relURL }}" alt="" width="32" height="32">{{ end }}
           <span class="logo-text">{{ site.Title }}</span>
         </a>
-        {{ with site.Params.footerText | default site.Params.tagline }}<p>{{ . }}</p>{{ end }}
+        {{ with site.Params.footerText | default site.Params.tagline }}
+          <p class="f-tagline">{{ . }}</p>
+        {{ end }}
+
+        <div class="f-socials">
+          {{ with or site.Params.repo site.Params.author.github }}
+            {{ $gh := . }}
+            {{ if not (hasPrefix $gh "http") }}{{ $gh = printf "https://github.com/%s" $gh }}{{ end }}
+            <a href="{{ $gh }}" target="_blank" rel="noopener noreferrer" class="f-social-btn" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            </a>
+          {{ end }}
+          {{ with or site.Params.twitter site.Params.author.twitter }}
+            {{ $tw := . }}
+            {{ if not (hasPrefix $tw "http") }}{{ $tw = printf "https://twitter.com/%s" (strings.TrimPrefix "@" $tw) }}{{ end }}
+            <a href="{{ $tw }}" target="_blank" rel="noopener noreferrer" class="f-social-btn" aria-label="Twitter">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768m2.464-2.464l6.768-6.768"/></svg>
+            </a>
+          {{ end }}
+          <a href="{{ "index.xml" | relURL }}" class="f-social-btn" aria-label="RSS Feed" title="RSS Feed">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+          </a>
+        </div>
+
+        <button type="button" class="shortcuts-trigger f-shortcuts-btn" title="View keyboard shortcuts">
+          <kbd class="footer-kbd">?</kbd>
+          <span>Shortcuts</span>
+        </button>
       </section>
 
+      <nav class="f-col" aria-label="Navigation">
+        <h2>Navigation</h2>
+        <ul>
+          {{ range site.Menus.main }}
+            <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+          {{ end }}
+        </ul>
+      </nav>
+
       {{ with site.Home.Sections }}
-      <nav class="f-col" aria-label="Browse">
-        <h2>Browse</h2>
-        <ul>{{ range .ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}</ul>
+      <nav class="f-col" aria-label="Sections">
+        <h2>Sections</h2>
+        <ul>
+          {{ range .ByWeight }}
+            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+          {{ end }}
+        </ul>
       </nav>
       {{ end }}
 
       {{ with first 4 site.RegularPages }}
       <nav class="f-col" aria-label="Latest posts">
         <h2>Latest</h2>
-        <ul>{{ range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ul>
-      </nav>
-      {{ end }}
-
-      {{ $links := site.Menus.footer }}{{ if not $links }}{{ $links = site.Menus.main }}{{ end }}
-      {{ with $links }}
-      <nav class="f-col" aria-label="Links">
-        <h2>Links</h2>
-        <ul>{{ range . }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}</ul>
+        <ul>
+          {{ range . }}
+            <li><a href="{{ .RelPermalink }}" title="{{ .Title }}">{{ .Title | truncate 28 }}</a></li>
+          {{ end }}
+        </ul>
       </nav>
       {{ end }}
     </div>
@@ -35,8 +71,15 @@
     <div class="footer-base">
       <p class="wordmark" aria-hidden="true">{{ site.Title }}</p>
       <div class="footer-bar">
-        <span>{{ with site.Params.copyright }}{{ . }}{{ else }}&copy; {{ now.Year }} {{ site.Title }}{{ end }}</span>
-        <a href="#top" class="to-top">Back to top</a>
+        <div class="footer-copy">
+          <span>{{ with site.Params.copyright }}{{ . }}{{ else }}&copy; {{ now.Year }} {{ site.Title }}{{ end }}</span>
+          <span class="footer-dot">&bull;</span>
+          <span>Designed with Hugo</span>
+        </div>
+        <a href="#top" class="to-top" aria-label="Back to top">
+          <span>Back to top</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+        </a>
       </div>
     </div>
   </div>
