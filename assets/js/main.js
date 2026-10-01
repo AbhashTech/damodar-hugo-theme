@@ -345,5 +345,41 @@
     });
   }
   initTabs();
+
+  /* Image Lightbox / Zoom */
+  function initImageZoom() {
+    var overlay = document.createElement('div');
+    overlay.className = 'image-zoom-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    var zoomImg = document.createElement('img');
+    zoomImg.className = 'image-zoom-img';
+    zoomImg.alt = '';
+    overlay.appendChild(zoomImg);
+    document.body.appendChild(overlay);
+
+    function closeZoom() {
+      overlay.classList.remove('active');
+      document.body.classList.remove('zoom-open');
+    }
+
+    overlay.addEventListener('click', closeZoom);
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+        closeZoom();
+      }
+    });
+
+    document.querySelectorAll('.prose img').forEach(function (img) {
+      if (img.closest('a')) return;
+      img.classList.add('zoomable');
+      img.addEventListener('click', function () {
+        zoomImg.src = img.currentSrc || img.src;
+        zoomImg.alt = img.alt || '';
+        overlay.classList.add('active');
+        document.body.classList.add('zoom-open');
+      });
+    });
+  }
+  initImageZoom();
 })();
 
