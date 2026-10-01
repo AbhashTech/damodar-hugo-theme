@@ -45,3 +45,4 @@
 {{- end -}}
 {{ with site.Params.logo }}<link rel="icon" href="{{ . | relURL }}">{{ end }}
 {{ partial "analytics.html" . }}
+{{ partial "prefetch.html" . }}

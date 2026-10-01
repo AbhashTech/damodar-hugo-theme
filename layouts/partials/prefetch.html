@@ -1,0 +1,43 @@
+<script type="speculationrules">
+{
+  "prefetch": [
+    {
+      "where": {
+        "and": [
+          { "href_matches": "/*" },
+          { "not": { "href_matches": ["/*\\?*", "*/index.json"] } }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}
+</script>
+<script>
+(function () {
+  if (typeof HTMLScriptElement !== 'undefined' && HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) return;
+  var prefetched = {};
+  function prefetch(url) {
+    if (!url || prefetched[url]) return;
+    prefetched[url] = true;
+    var link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = url;
+    document.head.appendChild(link);
+  }
+  document.addEventListener('mouseover', function (e) {
+    var a = e.target.closest('a');
+    if (!a || !a.href) return;
+    if (a.origin === window.location.origin && a.pathname !== window.location.pathname && !a.hash && a.href.indexOf('?') === -1) {
+      prefetch(a.href);
+    }
+  }, { passive: true });
+  document.addEventListener('touchstart', function (e) {
+    var a = e.target.closest('a');
+    if (!a || !a.href) return;
+    if (a.origin === window.location.origin && a.pathname !== window.location.pathname && !a.hash && a.href.indexOf('?') === -1) {
+      prefetch(a.href);
+    }
+  }, { passive: true });
+})();
+</script>
