@@ -1,0 +1,7 @@
+{{- $groupId := .Get "groupId" | default (.Get 0) -}}
+<div class="tabs-wrapper"{{ with $groupId }} data-tabs-group="{{ . }}"{{ end }}>
+  <div class="tabs-nav" role="tablist"></div>
+  <div class="tabs-content">
+    {{ .Inner }}
+  </div>
+</div>

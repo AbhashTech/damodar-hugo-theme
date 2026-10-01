@@ -285,5 +285,65 @@
     });
   }
   initBackToTop();
+
+  /* Tabs component initialization */
+  function initTabs() {
+    var wrappers = document.querySelectorAll('.tabs-wrapper');
+    wrappers.forEach(function (wrapper) {
+      if (wrapper.dataset.tabsInit) return;
+      wrapper.dataset.tabsInit = 'true';
+
+      var nav = wrapper.querySelector('.tabs-nav');
+      var panels = Array.prototype.slice.call(wrapper.querySelectorAll('.tabs-content > .tab-panel'));
+      if (!nav || panels.length === 0) return;
+
+      nav.innerHTML = '';
+      var buttons = [];
+
+      panels.forEach(function (panel, idx) {
+        var name = panel.getAttribute('data-tab-name') || ('Tab ' + (idx + 1));
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tab-btn' + (idx === 0 ? ' active' : '');
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
+        btn.textContent = name;
+        buttons.push(btn);
+        nav.appendChild(btn);
+
+        panel.classList.toggle('active', idx === 0);
+
+        btn.addEventListener('click', function () {
+          selectTab(idx);
+        });
+      });
+
+      function selectTab(index) {
+        buttons.forEach(function (b, i) {
+          var isCurrent = (i === index);
+          b.classList.toggle('active', isCurrent);
+          b.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+        });
+        panels.forEach(function (p, i) {
+          p.classList.toggle('active', i === index);
+        });
+      }
+
+      nav.addEventListener('keydown', function (e) {
+        var currentIdx = buttons.findIndex(function (b) { return b.classList.contains('active'); });
+        if (currentIdx === -1) return;
+        if (e.key === 'ArrowRight') {
+          var nextIdx = (currentIdx + 1) % buttons.length;
+          selectTab(nextIdx);
+          buttons[nextIdx].focus();
+        } else if (e.key === 'ArrowLeft') {
+          var prevIdx = (currentIdx - 1 + buttons.length) % buttons.length;
+          selectTab(prevIdx);
+          buttons[prevIdx].focus();
+        }
+      });
+    });
+  }
+  initTabs();
 })();
 

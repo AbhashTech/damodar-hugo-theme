@@ -169,6 +169,19 @@ h1{font:600 2.1rem/1.2 var(--sans);letter-spacing:-.02em;margin:0 0 .6rem}
 .prose tr:nth-child(even){background:rgba(0,0,0,.02)}
 :root[data-theme="dark"] .prose tr:nth-child(even){background:rgba(255,255,255,.02)}
 
+/* ---- tabs component ---- */
+.tabs-wrapper{margin:1.6rem 0;border:1px solid var(--rule);border-radius:8px;background:var(--bg);overflow:hidden}
+.tabs-nav{display:flex;gap:.25rem;padding:.35rem .5rem 0;background:var(--panel);border-bottom:1px solid var(--rule);overflow-x:auto}
+.tab-btn{display:inline-flex;align-items:center;padding:.4rem .85rem;border:1px solid transparent;border-bottom:none;border-radius:6px 6px 0 0;background:transparent;color:var(--muted);font:600 12.5px/1.4 var(--mono);cursor:pointer;transition:all .15s ease;white-space:nowrap}
+.tab-btn:hover{color:var(--fg)}
+.tab-btn.active{background:var(--bg);color:var(--accent);border-color:var(--rule);margin-bottom:-1px;padding-bottom:calc(.4rem + 1px)}
+.tabs-content{padding:1rem 1.25rem}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.tab-panel>:first-child{margin-top:0}
+.tab-panel>:last-child{margin-bottom:0}
+.tab-panel .code-block-wrapper,.tab-panel .highlight{margin:.4rem 0}
+
 /* ---- series & related content ---- */
 .series-box{margin:1.8rem 0;padding:1rem 1.25rem;background:var(--panel);border:1px solid var(--rule);border-radius:8px}
 .series-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;font:13px/1.4 var(--mono)}
