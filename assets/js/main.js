@@ -270,5 +270,20 @@
     });
   }
   initAlerts();
+
+  /* Floating back to top button */
+  function initBackToTop() {
+    var btt = document.getElementById('back-to-top');
+    if (!btt) return;
+    function checkBtt() {
+      btt.classList.toggle('visible', window.scrollY > 300);
+    }
+    window.addEventListener('scroll', checkBtt, { passive: true });
+    checkBtt();
+    btt.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  initBackToTop();
 })();
 
