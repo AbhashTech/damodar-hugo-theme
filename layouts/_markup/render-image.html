@@ -1,0 +1,34 @@
+{{- $dest := .Destination -}}
+{{- $alt := .Text -}}
+{{- $title := .Title -}}
+{{- $isRemote := or (hasPrefix $dest "http://") (hasPrefix $dest "https://") (hasPrefix $dest "//") -}}
+{{- $img := false -}}
+{{- if not $isRemote -}}
+  {{- $img = or (.Page.Resources.Get $dest) (resources.Get $dest) -}}
+{{- end -}}
+
+{{- if and $img (in (slice "image/jpeg" "image/png" "image/webp") $img.MediaType.Type) -}}
+  {{- $webp := $img.Process "webp" -}}
+  {{- $avif := $img.Process "avif" -}}
+  <picture>
+    {{- with $avif }}
+    <source srcset="{{ .RelPermalink }}" type="image/avif">
+    {{- end }}
+    {{- with $webp }}
+    <source srcset="{{ .RelPermalink }}" type="image/webp">
+    {{- end }}
+    <img src="{{ $img.RelPermalink }}"
+         width="{{ $img.Width }}"
+         height="{{ $img.Height }}"
+         alt="{{ $alt }}"
+         {{ with $title }}title="{{ . }}"{{ end }}
+         loading="lazy"
+         decoding="async">
+  </picture>
+{{- else -}}
+  <img src="{{ $dest | safeURL }}"
+       alt="{{ $alt }}"
+       {{ with $title }}title="{{ . }}"{{ end }}
+       loading="lazy"
+       decoding="async">
+{{- end -}}
