@@ -44,16 +44,43 @@
     });
   });
 
-  /* read progress: hidden when the page is not scrollable (already 100% on load) */
+  /* read progress: measures reading through the article up to 100% */
   var wrap = document.getElementById('progress');
   var bar = document.getElementById('progress-bar');
   var pct = document.getElementById('progress-pct');
   function progress() {
     if (!wrap) return;
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    if (max <= 4) { wrap.hidden = true; return; }
-    wrap.hidden = false;
-    var p = Math.max(0, Math.min(100, Math.round(window.scrollY / max * 100)));
+    var article = document.getElementById('post-body') || document.querySelector('article.post');
+    var p = 0;
+    if (article) {
+      var rect = article.getBoundingClientRect();
+      var articleTop = window.scrollY + rect.top;
+      var articleHeight = article.offsetHeight;
+      var scrollable = articleTop + articleHeight - window.innerHeight;
+      if (scrollable <= 10) {
+        wrap.hidden = true;
+        return;
+      }
+      wrap.hidden = false;
+      if (window.scrollY <= 10) {
+        p = 0;
+      } else if (window.scrollY >= scrollable) {
+        p = 100;
+      } else {
+        p = Math.round((window.scrollY / scrollable) * 100);
+      }
+    } else {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max <= 4) { wrap.hidden = true; return; }
+      wrap.hidden = false;
+      p = window.scrollY <= 10 ? 0 : Math.round((window.scrollY / max) * 100);
+    }
+
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 30) {
+      p = 100;
+    }
+
+    p = Math.max(0, Math.min(100, p));
     bar.style.setProperty('--p', p + '%');
     pct.textContent = p + '%';
   }
