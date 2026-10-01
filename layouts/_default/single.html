@@ -90,6 +90,8 @@
 
   <div class="prose" id="post-body">{{ .Content }}</div>
 
+  {{ partial "share.html" . }}
+
   {{ $related := site.RegularPages.Related . | first 3 }}
   {{ with $related }}
     <section class="related-posts" aria-label="Related articles" data-pagefind-ignore>

@@ -232,6 +232,13 @@ body.zoom-open{overflow:hidden}
 .related-title{font:600 14.5px/1.35 var(--sans);color:var(--fg);margin:0 0 .4rem;letter-spacing:-.01em}
 .related-desc{font-size:13px;line-height:1.5;color:var(--muted);margin:0}
 
+/* ---- post actions & social sharing ---- */
+.post-actions{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;margin:2.5rem 0 1.5rem;padding:.85rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:13px/1.4 var(--mono)}
+.share-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.action-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .65rem;background:var(--panel);border:1px solid var(--rule);border-radius:6px;color:var(--muted);text-decoration:none;font:inherit;cursor:pointer;transition:all .15s ease}
+.action-btn:hover{background:var(--bg);color:var(--accent);border-color:var(--accent)}
+.copy-link-btn.copied{color:#10b981;border-color:#10b981}
+
 /* ---- post pager ---- */
 .post-pager{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:3.5rem 0 2rem;padding-top:2rem;border-top:1px solid var(--rule)}
 .pager-card{display:flex;flex-direction:column;gap:.3rem;padding:1rem 1.2rem;background:var(--panel);border:1px solid var(--rule);border-radius:8px;text-decoration:none;color:inherit;transition:all .15s ease}

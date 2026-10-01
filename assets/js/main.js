@@ -517,5 +517,25 @@
     });
   }
   initShortcuts();
+
+  /* Post share & copy link button */
+  function initShareButtons() {
+    var copyBtns = document.querySelectorAll('.copy-link-btn');
+    copyBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var url = btn.getAttribute('data-url') || window.location.href;
+        navigator.clipboard.writeText(url).then(function () {
+          btn.classList.add('copied');
+          var textSpan = btn.querySelector('.copy-link-text');
+          if (textSpan) textSpan.textContent = 'Copied!';
+          setTimeout(function () {
+            btn.classList.remove('copied');
+            if (textSpan) textSpan.textContent = 'Copy link';
+          }, 2000);
+        }).catch(function () {});
+      });
+    });
+  }
+  initShareButtons();
 })();
 
