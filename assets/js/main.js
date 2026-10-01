@@ -17,6 +17,16 @@
     try { localStorage.setItem('theme', next); } catch (e) {}
     paint();
   });
+  try {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      try {
+        if (!localStorage.getItem('theme')) {
+          root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+          paint();
+        }
+      } catch (err) {}
+    });
+  } catch (e) {}
 
   var menuBtn = document.getElementById('menu-btn');
   var sidebar = document.getElementById('sidebar');
