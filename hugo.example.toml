@@ -4,7 +4,12 @@ title = "My Notes"
 theme = "damodar"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS", "JSON"] # "JSON" enables client-side search fallback
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  series = "series"
 
 [params]
   logo = "/logo.svg"          # file in static/ ; remove to show only the site title
@@ -17,9 +22,35 @@ theme = "damodar"
   ogImage = ""                # path to default social share card image
   termsDescription = "Browse all topics and tags."
 
+  [params.author]
+    name = "Author Name"
+
+  # Comments via Giscus
+  # [params.giscus]
+  #   repo = "yourusername/your-repo"
+  #   repoId = "R_kgDO..."
+  #   category = "Announcements"
+  #   categoryId = "DIC_kwDO..."
+  #   mapping = "pathname"
+  #   theme = "preferred_color_scheme"
+  #   lang = "en"
+
+  # Or comments via Utterances
+  # [params.utterances]
+  #   repo = "yourusername/your-repo"
+  #   issueTerm = "pathname"
+  #   theme = "preferred-color-scheme"
+
+  # Privacy-friendly analytics
+  # [params.plausible]
+  #   domain = "example.org"
+
+  # [params.cloudflareAnalytics]
+  #   token = "your-token"
+
 [markup.tableOfContents]
   startLevel = 2
-  endLevel = 3
+  endLevel = 4
   ordered = false
 
 [markup.goldmark.renderer]
@@ -31,7 +62,7 @@ theme = "damodar"
   lineNos = false
   tabWidth = 2
 
-# Links shown at the bottom of the sidebar
+# Links shown at the bottom of the sidebar and footer
 [[menus.main]]
   name = "Home"
   url = "/"

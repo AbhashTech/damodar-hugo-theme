@@ -1,68 +1,175 @@
 # Damodar
 
-A clean, fast, documentation-and-notes Hugo theme featuring a sticky left sidebar, collapsible section tree, instant search modal, dual-theme syntax highlighting, reading progress, and typography tuned for long-form reading.
+[![Hugo](https://img.shields.io/badge/Hugo-Extended_%E2%89%A5_0.120.0-blue.svg)](https://gohugo.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)]()
 
-## Features
-
-- 🔍 **Client-Side Search (Pagefind & Built-in)** — Keyboard-driven modal dialog (`⌘K` / `Ctrl+K` or `/`) with Pagefind integration (`data-pagefind-body`, metadata, filters) and zero-config built-in JSON search fallback. Indexed using `npx -y pagefind --site public`.
-- 🏷️ **Tags & Taxonomy Pages** — Built-in tag cloud (`/tags/`), tag-specific listing pages (`/tags/<tag>/`), and clickable tag badges on posts.
-- 🎨 **Dual-Theme Syntax Highlighting** — Seamless light and dark mode code highlighting powered by Chroma classes, complete with language badges and a one-click clipboard copy button.
-- 💡 **Callouts & GitHub-Style Alerts** — Custom `{{< callout >}}` shortcode and automatic support for GitHub markdown alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).
-- 🧭 **Breadcrumbs & Post Navigation** — Schema.org microdata breadcrumbs for SEO and previous/next article pager cards.
-- 🌲 **Interactive Sidebar** — Collapsible section hierarchy, scroll-spy table of contents with live branch highlighting, and animated reading progress bar.
-- 🌓 **Theme Switcher** — Smooth light and dark mode toggle with system preference detection and `localStorage` persistence.
-- 📱 **Responsive Design** — Desktop multi-column grid, sticky navigation, and mobile drawer with accessible focus handling.
-- 🚀 **SEO & Social Cards** — Open Graph, Twitter Cards, canonical URLs, and RSS autodiscovery out of the box.
-- 🚫 **Custom 404 Page** — Clean error page with direct search access.
+A clean, fast, documentation-and-notes Hugo theme designed for engineers, researchers, and technical writers. Features a sticky left sidebar, collapsible section hierarchy, keyboard-driven search modal, dual-theme syntax highlighting, reading progress tracking, responsive image pipelines, and distraction-free typography tuned for long-form reading.
 
 ---
 
-## Quick Start
+## Key Features
 
-### 1. Installation
+- 🔍 **Dual-Engine Search**: Keyboard-driven modal dialog (`⌘K` / `Ctrl+K` or `/`) with native [Pagefind](https://pagefind.app/) indexing (`data-pagefind-*` hooks) and automatic fallback to a zero-config client-side JSON search index.
+- 🌓 **Flicker-Free Dark/Light Mode**: Inline blocking detection prevents FOUC (flash of unstyled content), synchronized with system color preferences (`prefers-color-scheme`) and persistent via `localStorage`.
+- 🌲 **Sticky Navigation & Dynamic TOC**: Independent scrolling desktop sidebar with collapsible section hierarchy and `IntersectionObserver` scroll-spy Table of Contents that tracks reading progress up to 100%.
+- ⚡ **Enhanced Markdown Render Hooks**:
+  - **Code Blocks**: Header bar with language badges, optional filename/title displays, and one-click Clipboard API copy button.
+  - **Headings**: Clean, accessible permalink anchors (`#`) on hover and focus for `<h2>`–`<h6>`.
+  - **Images**: Automatic `<picture>` element generation with Hugo Pipes WebP and AVIF conversions, responsive `srcset`, `loading="lazy"`, and `decoding="async"`.
+  - **Links**: Smart external link detection appending `target="_blank"` and `rel="noopener noreferrer"` while preserving relative internal links.
+- 📐 **Conditional KaTeX & Mermaid.js**: Zero-bloat conditional asset loading when `math: true` or `mermaid: true` is defined in page front matter.
+- 💡 **Callouts & GitHub-Style Alerts**: Dedicated `{{< callout >}}` shortcodes and automated styling for GitHub markdown alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`, `[!DANGER]`).
+- 📚 **Series & Related Content**: In-article `series` taxonomy navigation box and automated 2–3 card related posts section powered by Hugo's related content engine.
+- 📊 **Rich Post Metadata**: Clear metadata tree displaying author, publish date, last modified date, word count, reading time, and interactive tag badges.
+- 💬 **Privacy-Friendly Comments & Analytics**: Pluggable GitHub discussions ([Giscus](https://giscus.app/) & [Utterances](https://utteranc.es/)) alongside privacy-respecting analytics ([Plausible](https://plausible.io/), [Fathom](https://usefathom.com/), Cloudflare Web Analytics, [Umami](https://umami.is/)).
+- 🌐 **SEO & Structured Data**: Complete JSON-LD schemas (`WebSite`, `BreadcrumbList`, `BlogPosting`), Open Graph protocol, Twitter Cards, canonical tags, and RSS autodiscovery.
 
-In your Hugo site's root directory:
+---
+
+## Directory Structure
+
+```text
+themes/damodar/
+├── assets/
+│   ├── css/
+│   │   ├── main.css           # Core layout, sidebar, typography, callouts & themes
+│   │   └── syntax.css         # Dual-mode light & dark Chroma syntax themes
+│   └── js/
+│       ├── main.js            # Sidebar drawer, TOC scroll spy, copy buttons, alerts
+│       └── search.js          # Search modal dialog, Pagefind & JSON engine
+├── layouts/
+│   ├── _default/
+│   │   ├── baseof.html        # Base skeleton with Pagefind hooks & sidebar grid
+│   │   ├── list.html          # Taxonomy & section archive listings
+│   │   └── single.html        # Article layout with meta tree, series & pager
+│   ├── _markup/
+│   │   ├── render-codeblock.html # Code block hook with title, lang & copy button
+│   │   ├── render-heading.html   # Heading hook with permalink anchor links
+│   │   ├── render-image.html     # Image hook with WebP/AVIF picture elements
+│   │   └── render-link.html      # Link hook with external target/rel detection
+│   ├── partials/
+│   │   ├── analytics.html     # Privacy-friendly analytics partial
+│   │   ├── breadcrumbs.html   # Breadcrumb navigation bar
+│   │   ├── comments.html      # Giscus / Utterances comments partial
+│   │   ├── footer.html        # Multi-column site footer
+│   │   ├── head.html          # HTML head, styles, metadata & blocking theme init
+│   │   ├── math.html          # KaTeX auto-render script partial
+│   │   ├── mermaid.html       # Mermaid.js initialization partial
+│   │   ├── schema.html        # JSON-LD structured data partial
+│   │   ├── search-modal.html  # Keyboard-accessible search modal dialog
+│   │   ├── sectiontree.html   # Recursive collapsible section navigation
+│   │   └── sidebar.html       # Sticky sidebar container & Table of Contents
+│   ├── shortcodes/
+│   │   └── callout.html       # Shortcode for tip, note, warning, danger callouts
+│   └── index.json             # JSON search index template
+```
+
+---
+
+## Prerequisites & Installation
+
+### Prerequisites
+- **Hugo Extended** version `v0.120.0` or later is required for WebP/AVIF image generation and Hugo Pipes asset bundling. Check your installation with:
+  ```bash
+  hugo version
+  ```
+
+### Method 1: Git Submodule (Recommended)
+
+From your Hugo project root directory:
 
 ```bash
 git submodule add https://github.com/kunalgautam/damodar.git themes/damodar
 ```
 
-Or clone directly:
+### Method 2: Hugo Module
+
+Initialize your site as a Hugo module:
 
 ```bash
-git clone https://github.com/kunalgautam/damodar.git themes/damodar
+hugo mod init github.com/yourusername/your-site
 ```
 
-### 2. Configuration
+Add the theme import to your `hugo.toml`:
 
-Add `damodar` to your `hugo.toml` (or copy `hugo.example.toml`):
+```toml
+[module]
+  [[module.imports]]
+    path = "github.com/kunalgautam/damodar"
+```
+
+---
+
+## Configuration Reference (`hugo.toml`)
+
+Copy this complete sample configuration into your site's `hugo.toml`:
 
 ```toml
 baseURL = "https://example.org/"
-locale = "en"
-title = "My Notes"
+title = "Damodar Notes"
 theme = "damodar"
+locale = "en"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"] # "JSON" enables client-side instant search
+  home = ["HTML", "RSS", "JSON"] # "JSON" enables instant client-side search fallback
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  series = "series"
 
 [params]
-  logo = "/logo.svg"             # static/logo.svg; remove to display text only
-  tagline = "Notes on building things."
-  showRecent = true              # show recent posts on home page
+  logo = "/logo.svg"             # static/logo.svg; omit to display site title text
+  tagline = "Engineering notes, architecture, and guides."
+  footerText = "Published with Hugo and Damodar theme."
+  showRecent = true              # show recent posts list on the home page
   recentCount = 5
-  footerText = "Notes on building things."
-  # copyright = "© 2026 Custom Author"
-  # twitter = "@yourusername"
-  # ogImage = "/images/og-card.png"
+  ogImage = "/images/og-default.png" # default social share card
+  twitter = "@yourusername"
+
+  # Default author details
+  [params.author]
+    name = "Alex Engineer"
+
+  # Comments (choose Giscus or Utterances)
+  [params.giscus]
+    repo = "yourusername/your-repo"
+    repoId = "R_kgDO..."
+    category = "Announcements"
+    categoryId = "DIC_kwDO..."
+    mapping = "pathname"
+    theme = "preferred_color_scheme"
+    lang = "en"
+
+  # Optional Utterances fallback (used if giscus is not configured)
+  # [params.utterances]
+  #   repo = "yourusername/your-repo"
+  #   issueTerm = "pathname"
+  #   theme = "preferred-color-scheme"
+
+  # Privacy-friendly analytics (configure any of the following)
+  [params.plausible]
+    domain = "example.org"
+    # scriptUrl = "https://plausible.io/js/script.js"
+
+  # [params.cloudflareAnalytics]
+  #   token = "your-cloudflare-token"
+
+  # [params.fathom]
+  #   siteId = "ABCDEFGH"
+
+  # [params.umami]
+  #   websiteId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  #   scriptUrl = "https://analytics.example.com/script.js"
 
 [markup.tableOfContents]
   startLevel = 2
-  endLevel = 3
+  endLevel = 4
   ordered = false
 
 [markup.goldmark.renderer]
-  unsafe = true                  # enables HTML elements like <kbd> and raw markup
+  unsafe = true                  # enables raw HTML elements such as <kbd> tags
 
 [markup.highlight]
   noClasses = false              # required for dual-theme light/dark syntax highlighting
@@ -70,7 +177,7 @@ theme = "damodar"
   lineNos = false
   tabWidth = 2
 
-# Navigation links in sidebar and footer
+# Navigation links displayed at the bottom of the sidebar and in the footer
 [[menus.main]]
   name = "Home"
   url = "/"
@@ -85,72 +192,134 @@ theme = "damodar"
   name = "About"
   url = "/about/"
   weight = 3
-
-[[menus.main]]
-  name = "Contact"
-  url = "/contact/"
-  weight = 4
-```
-
-### 3. Run Site
-
-```bash
-hugo server
 ```
 
 ---
 
-## Writing Content
+## Content Authoring Guide
 
-### Frontmatter
+### Front Matter
+
+Create content with rich metadata in `content/posts/my-post.md`:
 
 ```yaml
 ---
-title: "Building Resilient APIs"
-date: 2026-09-20
-description: "A comprehensive guide to designing fault-tolerant backend architectures."
-tags: ["engineering", "backend", "go"]
-toc: true             # defaults to true; set to false to disable Table of Contents
-searchhidden: false   # set to true to exclude this page from the search index
+title: "Distributed Systems: Principles & Patterns"
+date: 2026-10-01T10:00:00Z
+lastmod: 2026-10-02T15:30:00Z
+author: "Alex Engineer"
+description: "A comprehensive deep dive into replication models and consensus algorithms."
+tags: ["distributed-systems", "architecture", "go"]
+series: ["Distributed Fundamentals"]
+math: true             # loads KaTeX styles and auto-render scripts
+mermaid: true          # loads Mermaid.js diagram engine
+comments: true         # set to false to disable comments on this page
+searchhidden: false    # set to true to exclude from search indexing
+draft: false
 ---
 ```
 
+---
+
 ### Code Blocks
 
-Code blocks automatically receive language labels, syntax highlighting in both light and dark mode, and a copy button:
+Code blocks support optional file titles and language badges. Syntax highlighting automatically harmonizes with light and dark mode:
 
 ````markdown
-```python
-def fibonacci(n: int) -> list[int]:
-    """Generate Fibonacci sequence."""
-    sequence = [0, 1]
-    while len(sequence) < n:
-        sequence.append(sequence[-1] + sequence[-2])
-    return sequence[:n]
+```go {title="worker.go"}
+package main
+
+import "fmt"
+
+func ProcessTask(id int) {
+    fmt.Printf("Processing job: %d\n", id)
+}
 ```
 ````
 
+Every code block displays:
+- A header bar with the filename (`worker.go`) and language badge (`GO`).
+- An interactive, accessible **Copy** button with instant Clipboard API feedback.
+
+---
+
 ### Callouts & Admonitions
 
-Use the `callout` shortcode:
+#### 1. Shortcode Syntax
+Use the built-in `callout` shortcode:
 
 ```markdown
 {{< callout type="tip" title="Pro Tip" >}}
-You can quickly open search anywhere using <kbd>Ctrl</kbd>+<kbd>K</kbd> or <kbd>/</kbd>.
+Press <kbd>Ctrl</kbd>+<kbd>K</kbd> or <kbd>/</kbd> from any page to open instant search.
 {{< /callout >}}
 ```
 
-Supported types: `note`, `tip`, `important`, `warning`, `caution`.
+Supported types:
+- `note` (blue)
+- `tip` (emerald)
+- `important` (violet)
+- `warning` (amber)
+- `caution` (red)
+- `danger` (red with alert octagon)
 
-GitHub-style markdown alerts are also automatically styled:
+#### 2. GitHub-Style Markdown Alerts
+Native blockquote alerts are automatically converted into styled callouts:
 
 ```markdown
 > [!NOTE]
-> This is a note alert box.
+> Helpful background context or information.
 
 > [!WARNING]
-> Please review production settings before deploying.
+> Critical step required before deploying to production.
+
+> [!DANGER]
+> Destructive action that cannot be undone.
 ```
+
+---
+
+### Responsive Image Pipeline
+
+Standard markdown image syntax automatically runs through Hugo Pipes:
+
+```markdown
+![Architecture Diagram](architecture.png "System topology overview")
+```
+
+The `render-image.html` hook automatically produces:
+- Modern `<picture>` container.
+- `<source>` with converted **AVIF** and **WebP** formats.
+- Natural `width` and `height` attributes to eliminate cumulative layout shift (CLS).
+- `loading="lazy"` and `decoding="async"` for optimal page load performance.
+- Clean fallback for external URLs and SVG graphics.
+
+---
+
+### Mathematical Equations (KaTeX)
+
+When `math: true` is enabled in front matter, write LaTeX equations using dollar signs:
+
+- **Inline math**: `$E = mc^2$`
+- **Block equations**:
+  ```latex
+  $$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$$
+  ```
+
+---
+
+### Mermaid Diagrams
+
+When `mermaid: true` is enabled in front matter, create diagrams using standard code fences:
+
+````markdown
+```mermaid
+graph TD
+    Client --> API Gateway
+    API Gateway --> Auth Service
+    API Gateway --> Core Service
+    Core Service --> Database[(PostgreSQL)]
+```
+````
 
 ---
 
@@ -158,14 +327,134 @@ GitHub-style markdown alerts are also automatically styled:
 
 | Shortcut | Action |
 |---|---|
-| <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> | Open / Close Search Modal |
-| <kbd>/</kbd> | Open Search Modal (when not in an input) |
-| <kbd>Esc</kbd> | Close Search Modal or Mobile Sidebar |
-| <kbd>↑</kbd> / <kbd>↓</kbd> | Navigate Search Results |
-| <kbd>Enter</kbd> | Open Selected Search Result |
+| <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> | Open / close search modal dialog |
+| <kbd>/</kbd> | Open search modal (when not inside an input) |
+| <kbd>Esc</kbd> | Close search modal or mobile sidebar drawer |
+| <kbd>↑</kbd> / <kbd>↓</kbd> | Navigate search results |
+| <kbd>Enter</kbd> | Navigate to selected search result |
+
+---
+
+## Building & Deployment
+
+### Build Locally
+To build a production bundle with minification:
+
+```bash
+hugo --minify
+```
+
+### Build with Pagefind Search Index
+To index search content using Pagefind:
+
+```bash
+hugo --minify
+npx -y pagefind --site public
+```
+
+### Automated GitHub Actions Workflow
+Create `.github/workflows/deploy.yml` in your site repository to deploy to GitHub Pages:
+
+```yaml
+name: Deploy Hugo site to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build Hugo Site
+        run: hugo --minify
+
+      - name: Index Pagefind
+        run: npx -y pagefind --site public
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+---
+
+## Customization & Overrides
+
+### Overriding Layouts & Partials
+Hugo gives priority to your project root layouts. To customize any partial without modifying the theme:
+1. Recreate the path in your site repository:
+   `layouts/partials/<partial-name>.html`
+2. Hugo will automatically use your file instead of `themes/damodar/layouts/partials/<partial-name>.html`.
+
+### Customizing Colors & Styles
+All theme styles are driven by clean CSS variables. To change colors or fonts, create an `assets/css/custom.css` or define CSS variables in your site:
+
+```css
+:root {
+  --bg: #faf8f5;           /* Light mode background */
+  --panel: #f3f0e8;        /* Sidebar & card panel */
+  --fg: #1f1f1d;           /* Text color */
+  --muted: #5e5d59;        /* Muted captions */
+  --faint: #91908a;        /* Borders and timestamps */
+  --rule: #dedbd2;         /* Divider lines */
+  --accent: #c24d2c;       /* Brand accent */
+  --sans: "Newsreader", serif;
+  --mono: "JetBrains Mono", monospace;
+}
+
+:root[data-theme="dark"] {
+  --bg: #121210;
+  --panel: #181816;
+  --fg: #ecebe4;
+  --muted: #9e9d96;
+  --faint: #605f59;
+  --rule: #2a2a26;
+  --accent: #e06c4a;
+}
+```
 
 ---
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the [MIT License](LICENSE).
