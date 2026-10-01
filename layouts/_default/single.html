@@ -1,20 +1,52 @@
 {{ define "main" }}
 <article class="page post">
   {{ partial "breadcrumbs.html" . }}
-  <header>
-    <h1>{{ .Title }}</h1>
-    <p class="meta">
-      {{ with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "January 2, 2006" }}</time>{{ end }}
-      {{ if .ReadingTime }}<span>{{ .ReadingTime }} min read</span>{{ end }}
-      {{ with .WordCount }}<span>{{ . }} words</span>{{ end }}
-    </p>
-    {{ with .Params.tags }}
-      <div class="post-tags" aria-label="Tags">
-        {{ range . }}
-          <a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag-badge">#{{ . }}</a>
-        {{ end }}
-      </div>
-    {{ end }}
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{- $desc := .Description -}}
+    {{- if not $desc }}{{ $desc = .Params.subtitle }}{{ end -}}
+    {{- with $desc }}
+      <p class="post-desc">{{ . }}</p>
+    {{ end -}}
+
+    <div class="post-meta-tree">
+      {{ $author := .Params.author | default site.Params.author }}
+      {{ if reflect.IsMap $author }}{{ $author = $author.name }}{{ end }}
+      {{ with $author }}
+        <div class="meta-col">
+          <span class="meta-label">AUTHOR</span>
+          <span class="meta-val"><span class="tree-elbow" aria-hidden="true">&#x2514;</span> {{ . }}</span>
+        </div>
+      {{ end }}
+
+      {{ with .Date }}
+        <div class="meta-col">
+          <span class="meta-label">PUBLISHED</span>
+          <span class="meta-val"><span class="tree-elbow" aria-hidden="true">&#x2514;</span> <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "Jan 02, 2006" }}</time></span>
+        </div>
+      {{ end }}
+
+      {{ if .ReadingTime }}
+        <div class="meta-col">
+          <span class="meta-label">READING TIME</span>
+          <span class="meta-val"><span class="tree-elbow" aria-hidden="true">&#x2514;</span> {{ .ReadingTime }} min</span>
+        </div>
+      {{ end }}
+
+      {{ with .Params.tags }}
+        <div class="meta-col meta-tags-col">
+          <span class="meta-label">TAGS</span>
+          <span class="meta-val">
+            <span class="tree-elbow" aria-hidden="true">&#x2514;</span>
+            <span class="meta-tags-list">
+              {{ range $i, $t := . }}
+                {{ if $i }}, {{ end }}<a href="{{ "/tags/" | relURL }}{{ $t | urlize }}/" class="meta-tag-link">#{{ $t }}</a>
+              {{ end }}
+            </span>
+          </span>
+        </div>
+      {{ end }}
+    </div>
   </header>
   <div class="prose" id="post-body">{{ .Content }}</div>
 
