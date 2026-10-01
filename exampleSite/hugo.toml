@@ -15,6 +15,7 @@ theme = "damodar"
   series = "series"
 
 [params]
+  brandLayout = "below"       # "below" (default) or "beside"
   logo = "/logo.svg"          # file in static/ ; remove to show only the site title
   tagline = "Notes on building things."
   showRecent = true           # recent posts on home page

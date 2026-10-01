@@ -112,11 +112,29 @@ h1{font:600 2.1rem/1.2 var(--sans);letter-spacing:-.02em;margin:0 0 .6rem}
 .meta{font:13px var(--mono);color:var(--faint);display:flex;gap:1rem;margin:0 0 2.4rem}
 .small-head{font:600 13px var(--mono);color:var(--faint);margin:3rem 0 .8rem}
 .post-list{list-style:none;margin:0;padding:0}
-.post-list li{display:flex;justify-content:space-between;gap:1rem;padding:.55rem 0;border-bottom:1px solid var(--rule)}
+.post-list li{display:flex;justify-content:space-between;gap:1.2rem;padding:.75rem 0;border-bottom:1px solid var(--rule)}
 .post-list a{text-decoration:none}.post-list a:hover{text-decoration:underline}
 .post-list time,.post-list .count{font:13px var(--mono);color:var(--faint);white-space:nowrap}
 .post-item-meta{display:flex;gap:0.8rem;align-items:center}
 .read-time{font:12px var(--mono);color:var(--faint)}
+
+/* ---- Home feed & spacious typography ---- */
+.home{max-width:760px}
+.home-feed-header{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin:0 0 1.8rem;padding-bottom:.85rem;border-bottom:1px solid var(--rule)}
+.home-feed-title{font:700 1.95rem/1.2 var(--sans);color:var(--fg);margin:0;letter-spacing:-.02em}
+.home-post-list{list-style:none;margin:0;padding:0}
+.home-post-item{display:flex;justify-content:space-between;align-items:baseline;gap:2rem;padding:1.45rem 0;border-bottom:1px solid var(--rule)}
+.home-post-main{display:flex;flex-direction:column;gap:.45rem;flex:1;min-width:0}
+.home-post-title{font:600 1.25rem/1.35 var(--sans);color:var(--fg);text-decoration:none;letter-spacing:-.01em;transition:color .15s ease}
+.home-post-title:hover{color:var(--accent);text-decoration:none}
+.home-post-desc{margin:0;font-size:15px;line-height:1.6;color:var(--muted)}
+.home-post-time{font:13.5px var(--mono);color:var(--faint);white-space:nowrap;flex-shrink:0}
+@media (max-width:700px){
+  .home-post-item{flex-direction:column;gap:.35rem;padding:1.2rem 0}
+  .home-post-time{order:-1;font-size:12.5px}
+  .home-post-title{font-size:1.15rem}
+  .home-feed-title{font-size:1.65rem}
+}
 
 .post-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin:-1.5rem 0 2.2rem}
 .tag-badge{display:inline-block;padding:0.15rem 0.55rem;background:var(--panel);border:1px solid var(--rule);border-radius:999px;font:12px/1.4 var(--mono);color:var(--muted);text-decoration:none;transition:all 0.15s ease}
