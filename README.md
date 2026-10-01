@@ -672,6 +672,62 @@ To substitute your own Chroma themes:
 
 ---
 
+### 6. Child Theme Overrides (Theme Inheritance)
+
+If you maintain multiple documentation projects or want to customize Damodar across an entire organization without modifying the upstream repository, Hugo's **theme inheritance** (child theme pattern) is the recommended architectural approach.
+
+#### Why Use a Child Theme?
+- **Seamless Upstream Upgrades**: Pull improvements and bug fixes from `damodar` (`git submodule update --remote` or `hugo mod get -u`) with zero merge conflicts.
+- **Reusability**: Share a common branding layer (custom styles, company logo, compliance banners) across multiple independent sites.
+- **Clean Separation**: Custom business logic remains cleanly isolated from the base theme.
+
+#### Setup with Git Submodules
+
+1. Place both themes in your project's `themes/` directory:
+   ```text
+   themes/
+   ├── my-child-theme/      # Your organization's overrides
+   │   ├── layouts/
+   │   │   └── partials/
+   │   │       └── footer.html
+   │   └── assets/
+   │       └── css/
+   │           └── custom.css
+   └── damodar/             # Upstream base theme (submodule)
+   ```
+
+2. In your site's `hugo.toml`, specify the themes as an ordered array:
+   ```toml
+   # Hugo searches left-to-right: child theme first, falling back to damodar
+   theme = ["my-child-theme", "damodar"]
+   ```
+
+#### Setup with Hugo Modules
+
+If using Hugo Modules, import your child theme followed by the Damodar base theme:
+
+```toml
+[module]
+  [[module.imports]]
+    path = "github.com/my-org/my-child-theme"
+  [[module.imports]]
+    path = "github.com/kunalgautam/damodar"
+```
+
+#### Hugo Lookup Priority Hierarchy
+
+Hugo evaluates files in this exact priority order:
+
+```text
+1. Project Root Directory (layouts/, assets/, static/)   [HIGHEST PRIORITY]
+2. Child Theme (themes/my-child-theme/...)
+3. Base Theme (themes/damodar/...)                       [FALLBACK]
+```
+
+Any file present in your child theme will override the corresponding file in Damodar, while any file not defined in the child theme will gracefully fall back to Damodar's implementation.
+
+---
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

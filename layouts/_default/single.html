@@ -65,15 +65,16 @@
   </header>
 
   {{ with .Params.series }}
-    <aside class="series-box" aria-label="Series navigation" data-pagefind-ignore>
-      {{ range $name := . }}
-        {{ with index site.Taxonomies.series ($name | urlize) }}
+    {{ range $name := . }}
+      {{ $term := or (site.Taxonomies.series.Get $name) (site.Taxonomies.series.Get ($name | urlize)) (index site.Taxonomies.series ($name | urlize)) }}
+      {{ if and $term (gt (len $term.Pages) 0) }}
+        <aside class="series-box" aria-label="Series navigation" data-pagefind-ignore>
           <div class="series-header">
             <span class="series-badge">SERIES</span>
-            <span class="series-title">Part of: <a href="{{ .Page.RelPermalink }}">{{ $name }}</a></span>
+            <span class="series-title">Part of: <a href="{{ $term.Page.RelPermalink }}">{{ $name }}</a></span>
           </div>
           <ol class="series-list">
-            {{ range .Pages.ByDate }}
+            {{ range $term.Pages.ByDate }}
               <li class="{{ if eq . $ }}current{{ end }}">
                 {{ if eq . $ }}
                   <span class="series-current">{{ .Title }}</span> <span class="series-mark">(this article)</span>
@@ -83,9 +84,16 @@
               </li>
             {{ end }}
           </ol>
-        {{ end }}
+        </aside>
+      {{ else }}
+        <aside class="series-box" aria-label="Series navigation" data-pagefind-ignore>
+          <div class="series-header">
+            <span class="series-badge">SERIES</span>
+            <span class="series-title">Part of series: <strong>{{ $name }}</strong></span>
+          </div>
+        </aside>
       {{ end }}
-    </aside>
+    {{ end }}
   {{ end }}
 
   <div class="prose" id="post-body">{{ .Content }}</div>
