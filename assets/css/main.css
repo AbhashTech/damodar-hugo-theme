@@ -20,8 +20,10 @@ a{color:var(--link)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--bg);padding:.4rem .7rem;z-index:20}
 
-.layout{display:grid;grid-template-columns:var(--side) minmax(0,1fr)}
-.sidebar{position:sticky;top:0;align-self:start;height:100vh;width:var(--side);padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:1.6rem;overflow-y:auto;font:13px/1.5 var(--mono);color:var(--muted)}
+.layout{display:block}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--side);height:100vh;padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:1.6rem;overflow-y:auto;font:13px/1.5 var(--mono);color:var(--muted);background:var(--bg);border-right:1px solid var(--rule);z-index:10}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px}
 .side-top{display:flex;flex-direction:column;gap:.9rem}
 .logo{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--fg)}
 .logo img{display:block;border-radius:6px}
@@ -73,7 +75,7 @@ a{color:var(--link)}
 .side-bottom a{color:var(--muted);text-decoration:none}
 .side-bottom a:hover{color:var(--fg)}
 
-.content{min-width:0;padding:3.5rem 2rem 6rem}
+.content{min-width:0;margin-left:var(--side);padding:3.5rem 2rem 6rem}
 .page{max-width:680px;margin:0 auto}
 
 /* ---- breadcrumbs ---- */
@@ -184,7 +186,7 @@ h1{font:600 2.1rem/1.2 var(--sans);letter-spacing:-.02em;margin:0 0 .6rem}
 
 /* ---- footer (min 500px) ---- */
 .content{min-height:60vh}
-.site-footer{width:100%;min-height:500px;display:flex;background:var(--panel);border-top:1px solid var(--rule);font:14px/1.6 var(--sans);color:var(--muted)}
+.site-footer{width:auto;margin-left:var(--side);min-height:500px;display:flex;background:var(--panel);border-top:1px solid var(--rule);font:14px/1.6 var(--sans);color:var(--muted)}
 .footer-inner{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:4rem 2rem 1.5rem;display:flex;flex-direction:column;justify-content:space-between;gap:3rem;overflow:hidden}
 .footer-grid{display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:2.5rem}
 .f-brand p{margin:1rem 0 0;max-width:30ch}
@@ -247,6 +249,7 @@ body.search-open{overflow:hidden}
   .sidebar{position:fixed;inset:0 auto 0 0;height:auto;transform:translateX(-100%);transition:transform .2s;background:var(--bg);z-index:10;border-right:1px solid var(--rule)}
   .sidebar.open{transform:none}
   .content{margin-left:0;padding:4rem 1.2rem 4rem}
+  .site-footer{margin-left:0;width:100%}
   .footer-inner{padding:3rem 1.2rem 1.2rem}
   body{font-size:16px}
   h1{font-size:1.8rem}.home-title{font-size:2.1rem}
