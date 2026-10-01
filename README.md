@@ -13,7 +13,7 @@ A clean, fast, documentation-and-notes Hugo theme designed for engineers, resear
 - 🔍 **Dual-Engine Search**: Keyboard-driven modal dialog (`⌘K` / `Ctrl+K` or `/`) with native [Pagefind](https://pagefind.app/) indexing (`data-pagefind-*` hooks) and automatic fallback to a zero-config client-side JSON search index.
 - 🌓 **Flicker-Free Dark/Light Mode**: Inline blocking detection prevents FOUC, synchronized with system color preferences (`prefers-color-scheme`) and persistent via `localStorage`. Live re-renders diagrams when switching themes.
 - 🌲 **Context-Aware Sticky Sidebar**: Displays full brand header (logo, title, tagline, intro bio) on the home page with customizable layout options (`brandLayout = "below"` or `"beside"`). On all other pages, automatically condenses to a clean logo and site name to maximize vertical space for article Table of Contents ("ON THIS PAGE") or section hierarchy ("NAVIGATION").
-- 🎨 **Architectural Patterned Footer & Utility Suite**: Full-width footer featuring a subtle geometric dotted matrix pattern, glowing luminescent accent border, multi-column navigation, social badges, and integrated utility tools: search modal trigger (<kbd>⌘K</kbd>), theme toggle switch (<kbd>T</kbd>), and shortcuts reference (<kbd>?</kbd>).
+- 🎨 **Architectural Patterned Footer & Utility Suite**: Full-width footer featuring a subtle geometric dotted matrix pattern, glowing luminescent accent border, multi-column navigation (Navigation, Categories, Latest), social badges, top searchbox trigger (<kbd>⌘K</kbd>), and bottom utility bar with theme switch toggle (<kbd>T</kbd>), shortcuts reference (<kbd>?</kbd>), and smooth back-to-top.
 - ⌨️ **Keyboard Hotkeys & Navigation**: Global shortcuts modal (<kbd>?</kbd>), theme toggle (<kbd>T</kbd>), sequential article navigation (<kbd>J</kbd> / <kbd>K</kbd>), and home shortcut (<kbd>H</kbd>).
 - 🧩 **Interactive Component Shortcodes**: Accessible multi-language tabs (`{{< tabs >}}`), collapsible accordions (`{{< details >}}`), visual directory file trees (`{{< filetree >}}`), and admonitions (`{{< callout >}}`).
 - 🖼️ **Image Lightbox & Footnote Popovers**: Zero-dependency click-to-zoom image lightbox with backdrop blur, and in-place hover/click footnote tooltips.
@@ -157,6 +157,7 @@ locale = "en"
   # Sidebar section headings (defaults: "ON THIS PAGE" for TOC, "NAVIGATION" for site sections)
   tocTitle = "ON THIS PAGE"
   navigationTitle = "NAVIGATION"
+  footerCategoriesTitle = "Categories" # footer column heading for categories
 
   # Repository link for "Edit this page" action (hidden by default, set showEditPage = true to enable)
   repo = "https://github.com/yourusername/your-repo"
