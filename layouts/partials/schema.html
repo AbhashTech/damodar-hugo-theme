@@ -1,0 +1,67 @@
+{{- if .IsHome -}}
+<script type="application/ld+json">
+{{ dict
+  "@context" "https://schema.org"
+  "@type" "WebSite"
+  "name" site.Title
+  "url" site.BaseURL
+  "description" (site.Params.tagline | default site.Title)
+| jsonify (dict "indent" "  ") | safeJS }}
+</script>
+{{- end -}}
+
+{{- if .Ancestors -}}
+  {{- $items := slice -}}
+  {{- $pos := 1 -}}
+  {{- range (.Ancestors.Reverse) -}}
+    {{- if not .IsHome -}}
+      {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" .Title "item" .Permalink) -}}
+      {{- $pos = add $pos 1 -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" .Title "item" .Permalink) -}}
+  {{- if gt (len $items) 1 -}}
+<script type="application/ld+json">
+{{ dict
+  "@context" "https://schema.org"
+  "@type" "BreadcrumbList"
+  "itemListElement" $items
+| jsonify (dict "indent" "  ") | safeJS }}
+</script>
+  {{- end -}}
+{{- end -}}
+
+{{- if .IsPage -}}
+  {{- $author := .Params.author | default site.Params.author -}}
+  {{- if reflect.IsMap $author }}{{ $author = $author.name }}{{ end -}}
+  {{- $pubDate := or .PublishDate .Date -}}
+  {{- $modDate := or .Lastmod $pubDate -}}
+  {{- $desc := or .Description (.Summary | plainify | truncate 160) -}}
+  {{- $postSchema := dict
+    "@context" "https://schema.org"
+    "@type" "BlogPosting"
+    "headline" .Title
+    "description" $desc
+    "url" .Permalink
+    "publisher" (dict "@type" "Organization" "name" site.Title)
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+  -}}
+  {{- with $pubDate }}
+    {{- $postSchema = merge $postSchema (dict "datePublished" (.Format "2006-01-02T15:04:05Z07:00")) -}}
+  {{- end }}
+  {{- with $modDate }}
+    {{- $postSchema = merge $postSchema (dict "dateModified" (.Format "2006-01-02T15:04:05Z07:00")) -}}
+  {{- end }}
+  {{- with $author }}
+    {{- $postSchema = merge $postSchema (dict "author" (dict "@type" "Person" "name" .)) -}}
+  {{- end }}
+  {{- with .Params.tags }}
+    {{- $postSchema = merge $postSchema (dict "keywords" .) -}}
+  {{- end }}
+  {{- with or .Params.image site.Params.ogImage }}
+    {{- $postSchema = merge $postSchema (dict "image" (. | absURL)) -}}
+  {{- end }}
+<script type="application/ld+json">
+{{ $postSchema | jsonify (dict "indent" "  ") | safeJS }}
+</script>
+{{- end -}}
