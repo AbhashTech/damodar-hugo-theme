@@ -1,0 +1,26 @@
+{{ $cur := .cur }}
+{{ with .page.Sections }}
+<ul class="tree">
+  {{ range .ByWeight }}
+    {{ $open := or (.Eq $cur) (.IsAncestor $cur) }}
+    <li class="{{ if $open }}open{{ end }}">
+      {{ if .Sections }}
+        <div class="row">
+          <button type="button" class="node" data-toggle aria-expanded="{{ if $open }}true{{ else }}false{{ end }}">
+            <span class="caret" aria-hidden="true"></span>{{ .LinkTitle }}
+          </button>
+          <a class="goto" href="{{ .RelPermalink }}" aria-label="Open {{ .LinkTitle }}">{{ len .RegularPagesRecursive }}</a>
+        </div>
+        <div class="sub" {{ if not $open }}hidden{{ end }}>
+          {{ partial "sectiontree.html" (dict "page" . "cur" $cur) }}
+        </div>
+      {{ else }}
+        <div class="row">
+          <a class="node{{ if .Eq $cur }} current{{ end }}" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+          <span class="goto-count">{{ len .RegularPagesRecursive }}</span>
+        </div>
+      {{ end }}
+    </li>
+  {{ end }}
+</ul>
+{{ end }}

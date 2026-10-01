@@ -1,0 +1,12 @@
+{{ define "main" }}
+<article class="page post">
+  <header>
+    <h1>{{ .Title }}</h1>
+    <p class="meta">
+      {{ with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "January 2, 2006" }}</time>{{ end }}
+      {{ if .ReadingTime }}<span>{{ .ReadingTime }} min read</span>{{ end }}
+    </p>
+  </header>
+  <div class="prose" id="post-body">{{ .Content }}</div>
+</article>
+{{ end }}

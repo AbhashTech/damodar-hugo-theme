@@ -1,0 +1,15 @@
+{{ define "main" }}
+<div class="page home">
+  <h1 class="home-title">{{ site.Title }}</h1>
+  {{ with site.Params.tagline }}<p class="lede">{{ . }}</p>{{ end }}
+  <div class="prose">{{ .Content }}</div>
+  {{ if site.Params.showRecent | default true }}
+    <h2 class="small-head">Recent</h2>
+    <ul class="post-list">
+      {{ range first (site.Params.recentCount | default 5) site.RegularPages }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></li>
+      {{ end }}
+    </ul>
+  {{ end }}
+</div>
+{{ end }}

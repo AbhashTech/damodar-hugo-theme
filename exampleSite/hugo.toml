@@ -1,0 +1,29 @@
+baseURL = "https://example.org/"
+languageCode = "en"
+title = "My Notes"
+theme = "treeline"
+
+[params]
+  logo = "/logo.svg"          # file in static/ ; remove to show only the site title
+  tagline = "Notes on building things."
+  showRecent = true           # recent posts on home page
+  recentCount = 5
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+  ordered = false
+
+# Links shown at the bottom of the sidebar
+[[menus.main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+[[menus.main]]
+  name = "About"
+  url = "/about/"
+  weight = 2
+[[menus.main]]
+  name = "Contact"
+  url = "/contact/"
+  weight = 3

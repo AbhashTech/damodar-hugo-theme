@@ -1,0 +1,4 @@
+name = "Damodar"
+license = "MIT"
+description = "Docs-style theme: left sidebar with logo, theme toggle, heading tree, read progress and footer links."
+min_version = "0.120.0"
