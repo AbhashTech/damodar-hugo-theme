@@ -113,31 +113,33 @@
   }
 
   function getActiveIndex() {
-    var isBottom = (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 50);
-    var article = document.getElementById('post-body') || document.querySelector('article.post');
-    if (article) {
-      var rect = article.getBoundingClientRect();
-      var articleTop = window.scrollY + rect.top;
-      var articleHeight = article.offsetHeight;
-      if (window.scrollY >= articleTop + articleHeight - window.innerHeight - 30) {
-        isBottom = true;
-      }
-    }
-    if (isBottom && heads.length > 0) {
-      for (var j = heads.length - 1; j >= 0; j--) {
-        if (heads[j] && heads[j].getBoundingClientRect().top <= window.innerHeight) {
-          return j;
-        }
+    var threshold = 120;
+    var idx = -1;
+
+    for (var i = 0; i < heads.length; i++) {
+      if (heads[i] && heads[i].getBoundingClientRect().top <= threshold) {
+        idx = i;
       }
     }
 
-    var idx = -1;
-    var threshold = Math.min(220, window.innerHeight * 0.35);
-    for (var i = 0; i < heads.length; i++) {
-      if (heads[i] && heads[i].getBoundingClientRect().top <= threshold) idx = i;
+    // Only if at the absolute bottom of the entire page and the last heading couldn't scroll past the threshold
+    var isAbsoluteBottom = (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 20);
+    if (isAbsoluteBottom && heads.length > 0) {
+      var lastIdx = heads.length - 1;
+      if (heads[lastIdx] && heads[lastIdx].getBoundingClientRect().top <= window.innerHeight * 0.6) {
+        idx = lastIdx;
+      }
     }
+
     return idx;
   }
+
+  // Instant active state on TOC link click
+  links.forEach(function (link, index) {
+    link.addEventListener('click', function () {
+      setActiveHeading(index);
+    });
+  });
 
   // IntersectionObserver for modern heading observation
   if ('IntersectionObserver' in window && heads.length > 0) {
