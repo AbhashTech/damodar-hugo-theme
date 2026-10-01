@@ -1,3 +1,8 @@
+{{- if eq .Type "mermaid" -}}
+<pre class="mermaid">
+{{ .Inner | safeHTML }}
+</pre>
+{{- else -}}
 {{- $file := or .Attributes.file (or .Attributes.filename .Attributes.title) -}}
 <div class="code-block-wrapper">
   <div class="code-header">
@@ -15,3 +20,4 @@
   {{- $result := transform.HighlightCodeBlock . -}}
   {{ $result.Wrapped }}
 </div>
+{{- end -}}

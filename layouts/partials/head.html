@@ -31,4 +31,7 @@
 </script>
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- if or .Params.math .Params.katex site.Params.math -}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+{{- end -}}
 {{ with site.Params.logo }}<link rel="icon" href="{{ . | relURL }}">{{ end }}
