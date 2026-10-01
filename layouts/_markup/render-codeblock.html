@@ -1,7 +1,5 @@
 {{- if eq .Type "mermaid" -}}
-<pre class="mermaid">
-{{ .Inner | safeHTML }}
-</pre>
+<pre class="mermaid">{{- .Inner -}}</pre>
 {{- else -}}
 {{- $file := or .Attributes.file (or .Attributes.filename .Attributes.title) -}}
 <div class="code-block-wrapper">

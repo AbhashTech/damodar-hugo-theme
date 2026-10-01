@@ -1,7 +1,7 @@
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
-  const diagrams = document.querySelectorAll('.mermaid');
+  const diagrams = Array.from(document.querySelectorAll('.mermaid'));
   diagrams.forEach(function (el) {
     el.setAttribute('data-mermaid-src', el.textContent.trim());
   });
@@ -15,11 +15,13 @@
     });
     diagrams.forEach(function (el) {
       el.removeAttribute('data-processed');
-      el.innerHTML = el.getAttribute('data-mermaid-src') || '';
+      el.textContent = el.getAttribute('data-mermaid-src') || '';
     });
     try {
-      await mermaid.run();
-    } catch (err) {}
+      await mermaid.run({ nodes: diagrams });
+    } catch (err) {
+      console.warn('Mermaid rendering issue:', err);
+    }
   }
 
   renderMermaid();

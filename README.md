@@ -415,11 +415,11 @@ When `mermaid: true` is enabled in front matter, create diagrams using standard 
 
 ````markdown
 ```mermaid
-graph TD
-    Client --> API Gateway
-    API Gateway --> Auth Service
-    API Gateway --> Core Service
-    Core Service --> Database[(PostgreSQL)]
+flowchart TD
+    Client["Client App"] --> Gateway["API Gateway"]
+    Gateway --> Auth["Auth Service"]
+    Gateway --> Core["Core Service"]
+    Core --> DB[("PostgreSQL")]
 ```
 ````
 

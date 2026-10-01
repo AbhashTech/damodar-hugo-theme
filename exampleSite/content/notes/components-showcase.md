@@ -87,11 +87,11 @@ Footnotes in markdown provide unobtrusive citations[^1] that you can inspect by 
 Diagrams automatically adapt their color theme live whenever you toggle between light and dark mode:
 
 ```mermaid
-graph LR
-    A[Start Request] --> B{Cached?}
-    B -- Yes --> C[Return Fast Response]
-    B -- No --> D[Fetch from DB]
-    D --> E[Store in Cache]
+flowchart LR
+    A["Start Request"] --> B{"Cached?"}
+    B -->|Yes| C["Fast Response"]
+    B -->|No| D["Fetch DB"]
+    D --> E["Store Cache"]
     E --> C
 ```
 
