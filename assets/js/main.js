@@ -462,5 +462,60 @@
     popover.addEventListener('mouseleave', hidePopover);
   }
   initFootnotes();
+
+  /* Global keyboard navigation & shortcuts modal */
+  function initShortcuts() {
+    var modal = document.getElementById('shortcuts-modal');
+    var closeBtn = modal ? modal.querySelector('.shortcuts-modal-close') : null;
+
+    function openModal() {
+      if (!modal) return;
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.setAttribute('open', '');
+      }
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      if (typeof modal.close === 'function') {
+        modal.close();
+      } else {
+        modal.removeAttribute('open');
+      }
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    window.addEventListener('keydown', function (e) {
+      var tag = (e.target.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+      if (e.key === '?') {
+        e.preventDefault();
+        if (modal && modal.open) closeModal(); else openModal();
+      } else if (e.key === 't' || e.key === 'T') {
+        e.preventDefault();
+        var themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) themeToggle.click();
+      } else if (e.key === 'j' || e.key === 'J') {
+        var next = document.querySelector('.pager-next');
+        if (next && next.href) window.location.href = next.href;
+      } else if (e.key === 'k' || e.key === 'K') {
+        var prev = document.querySelector('.pager-prev');
+        if (prev && prev.href) window.location.href = prev.href;
+      } else if (e.key === 'h' || e.key === 'H') {
+        window.location.href = '/';
+      }
+    });
+  }
+  initShortcuts();
 })();
 
