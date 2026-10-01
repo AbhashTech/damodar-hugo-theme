@@ -4,7 +4,7 @@ A clean, fast, documentation-and-notes Hugo theme featuring a sticky left sideba
 
 ## Features
 
-- 🔍 **Instant Client-Side Search** — Keyboard-driven modal dialog (`⌘K` / `Ctrl+K` or `/`) with multi-field search (title, tags, section, content), matching highlights, and keyboard navigation. Zero external runtime dependencies.
+- 🔍 **Client-Side Search (Pagefind & Built-in)** — Keyboard-driven modal dialog (`⌘K` / `Ctrl+K` or `/`) with Pagefind integration (`data-pagefind-body`, metadata, filters) and zero-config built-in JSON search fallback. Indexed using `npx -y pagefind --site public`.
 - 🏷️ **Tags & Taxonomy Pages** — Built-in tag cloud (`/tags/`), tag-specific listing pages (`/tags/<tag>/`), and clickable tag badges on posts.
 - 🎨 **Dual-Theme Syntax Highlighting** — Seamless light and dark mode code highlighting powered by Chroma classes, complete with language badges and a one-click clipboard copy button.
 - 💡 **Callouts & GitHub-Style Alerts** — Custom `{{< callout >}}` shortcode and automatic support for GitHub markdown alerts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).

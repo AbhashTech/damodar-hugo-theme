@@ -18,6 +18,26 @@
   var previousActiveElement = null;
   var pendingCallbacks = [];
 
+  var pagefindInstance = null;
+  var pagefindChecked = false;
+
+  async function getPagefind() {
+    if (pagefindChecked) return pagefindInstance;
+    pagefindChecked = true;
+    var pfPath = modal.getAttribute('data-pagefind-path') || '/pagefind/pagefind.js';
+    try {
+      var pf = await import(pfPath);
+      if (pf && typeof pf.search === 'function') {
+        if (typeof pf.init === 'function') await pf.init();
+        pagefindInstance = pf;
+        return pagefindInstance;
+      }
+    } catch (e) {
+      pagefindInstance = null;
+    }
+    return null;
+  }
+
   function loadIndex(callback) {
     if (indexData) {
       if (callback) callback(null, indexData);
@@ -56,7 +76,6 @@
         })
         .catch(function (err) {
           if (!isFallback && targetUrl.startsWith('/')) {
-            // Try relative URL fallback (for sites in subdirectories or local file previews)
             var relUrl = targetUrl.replace(/^\/+/, '');
             doFetch(relUrl, true);
             return;
@@ -76,7 +95,9 @@
     document.body.classList.add('search-open');
     if (errorState) errorState.hidden = true;
 
-    loadIndex(function (err, data) {
+    // Check for Pagefind or preload fallback index
+    getPagefind().then(function (pf) {
+      if (!pf) loadIndex();
       if (!modal.hidden && input.value.trim()) {
         executeSearch(input.value);
       }
@@ -102,7 +123,11 @@
       e.preventDefault();
       openSearch();
     });
-    btn.addEventListener('mouseenter', function () { loadIndex(); }, { once: true });
+    btn.addEventListener('mouseenter', function () {
+      getPagefind().then(function (pf) {
+        if (!pf) loadIndex();
+      });
+    }, { once: true });
   });
 
   if (closeBtn) closeBtn.addEventListener('click', closeSearch);
@@ -171,8 +196,8 @@
     return highlightMatches(snippet, tokens);
   }
 
-  function executeSearch(query) {
-    var q = query.trim().toLowerCase();
+  async function executeSearch(query) {
+    var q = query.trim();
     if (!q) {
       resultsList.innerHTML = '';
       initialState.hidden = false;
@@ -184,7 +209,38 @@
 
     initialState.hidden = true;
     if (errorState) errorState.hidden = true;
-    var tokens = q.split(/\s+/).filter(Boolean);
+    var tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+
+    var pf = await getPagefind();
+    if (pf) {
+      try {
+        var searchRes = await pf.search(q);
+        if (!searchRes || !searchRes.results || searchRes.results.length === 0) {
+          renderResults([], tokens, q);
+          return;
+        }
+        var topResults = searchRes.results.slice(0, 15);
+        var loaded = await Promise.all(topResults.map(function (r) { return r.data(); }));
+        var formatted = loaded.map(function (d) {
+          var tags = (d.filters && d.filters.tag) ? (Array.isArray(d.filters.tag) ? d.filters.tag : [d.filters.tag]) : [];
+          return {
+            page: {
+              title: (d.meta && d.meta.title) ? d.meta.title : 'Untitled',
+              permalink: d.url,
+              summary: '',
+              excerpt: d.excerpt,
+              section: (d.meta && d.meta.section) ? d.meta.section : '',
+              tags: tags
+            },
+            score: 100
+          };
+        });
+        renderResults(formatted, tokens, q);
+        return;
+      } catch (err) {
+        console.warn('Pagefind search failed, falling back to local index:', err);
+      }
+    }
 
     loadIndex(function (err, pages) {
       if (err) {
@@ -285,11 +341,11 @@
       }
       a.appendChild(header);
 
-      var snippet = createSnippet(p.summary || p.content || '', tokens);
-      if (snippet) {
+      var snippetHtml = p.excerpt ? p.excerpt : createSnippet(p.summary || p.content || '', tokens);
+      if (snippetHtml) {
         var snippetP = document.createElement('p');
         snippetP.className = 'search-item-snippet';
-        snippetP.innerHTML = snippet;
+        snippetP.innerHTML = snippetHtml;
         a.appendChild(snippetP);
       }
 
